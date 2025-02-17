@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,15 +9,25 @@ public class UserController : MonoBehaviour
     public float maxXAngle;
     public float minXAngle;
 
+    Func<Block> spawnBlock;
+    Action<Block> deSpawnBlock;
     void Start()
     {
+        spawnBlock = Singleton<ObjectManager>.Intstance.GetMethod<Func<Block>>((int)ObjectManager.MethodNum.BlockSpawn);
+        deSpawnBlock = Singleton<ObjectManager>.Intstance.GetMethod<Action<Block>>((int)ObjectManager.MethodNum.BlockDeSpawn);
+
+        if (spawnBlock == null)
+            Debug.Log("스폰 널");
+        if (deSpawnBlock == null)
+            Debug.Log("디스폰 널");
+
         UserControlLoop().Forget();
         PreviewAndPlaceBlock();
     }
     //유니티 생명주기 함수
     async UniTaskVoid UserControlLoop()
     {
-        while (true)
+        while (Application.isPlaying && isActiveAndEnabled)
         {
             RotateView();
             MoveCharacter();
@@ -63,26 +74,55 @@ public class UserController : MonoBehaviour
         {
             moveDirection += new Vector3(Mathf.Sin(angleY * Mathf.Deg2Rad - Mathf.PI / 2), 0, Mathf.Cos(angleY * Mathf.Deg2Rad - Mathf.PI / 2));
         }
-
+        if ((Input.GetKey(KeyCode.LeftShift)))
+        {
+            moveDirection -= Vector3.up * Time.deltaTime;
+        }
+        if ((Input.GetKey(KeyCode.Space)))
+        {
+            moveDirection += Vector3.up * Time.deltaTime;
+        }
         transform.position += moveDirection.normalized * Time.deltaTime * 10;
     }
 
     //블럭 설치와 미리보기 기능
     private async void PreviewAndPlaceBlock()
     {
-        RaycastHit[] hits = Physics.RaycastAll(transform.position, transform.forward, 100);
-        Vector3 hitPos = Vector3.zero;
-        if (hits.Length > 0)
-            return;
 
-        foreach (RaycastHit hit in hits)
+        while (isActiveAndEnabled && Application.isPlaying)
         {
-            hitPos = hit.point;
-            break;
+            RaycastHit[] hits = Physics.RaycastAll(transform.position, transform.forward, 100);
+            Debug.DrawRay(transform.position, transform.forward * 100, Color.red);
+            Vector3 hitPos = Vector3.zero;
+            if (hits.Length <= 0)
+            {
+                await UniTask.Yield();
+                continue;
+            }
+
+            foreach (RaycastHit hit in hits)
+            {
+                hitPos = hit.point;
+                break;
+            }
+            hitPos.x = Mathf.Ceil(hitPos.x);
+            hitPos.y = Mathf.Ceil(hitPos.y);
+            hitPos.z = Mathf.Ceil(hitPos.z);
+
+            Block _block = spawnBlock?.Invoke();
+            Color _color = _block.Color;
+            _color.a = .5f;
+            _block.Color = _color;
+            _block.transform.position = hitPos;
+            await UniTask.Yield();
+            if (Input.GetMouseButtonUp(0))
+            {
+                Color color = _block.Color;
+                color.a = 1f;
+                _block.Color = color;
+                continue;
+            }
+            deSpawnBlock?.Invoke(_block);
         }
-        hitPos.x = Mathf.Round(hitPos.x);
-        hitPos.y = Mathf.Round(hitPos.y);
-        hitPos.z = Mathf.Round(hitPos.z);
-        await UniTask.Yield();
     }
 }

@@ -6,13 +6,13 @@ using UnityEngine;
 
 public class Singleton<T> : MonoBehaviour where T : BaseManager, new()
 {
-    private static T instance = new T();
+    protected static T instance;
     public static T Intstance
     {
         get { return instance; }
     }
 
-    public J GetMethod<J>(int methodNum) where J : System.Delegate
+    public static J GetMethod<J>(int methodNum) where J : System.Delegate
     {
         if (instance == null)
             return default(J);

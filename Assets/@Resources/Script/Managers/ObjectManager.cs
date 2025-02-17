@@ -3,17 +3,43 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.AI;
 
 public class ObjectManager :  Singleton<ObjectManager>, BaseManager
 {
-    
-    public T GetMethod<T>(int methodNum) where T : Delegate
+    public enum MethodNum
     {
-        return default(T);
+        BlockSpawn = 0,
+        BlockDeSpawn = 1
     }
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+    }
+
+    public new K GetMethod<K>(int methodNum) where K : Delegate
+    {
+        switch ((MethodNum)methodNum)
+        {
+            case MethodNum.BlockSpawn:
+                return new Func<Block>(blockManage.Spawn) as K;
+            case MethodNum.BlockDeSpawn:
+                return new Action<Block>(blockManage.DeSpawn) as K;
+        }
+        
+        return default(K);
+    }
+    ManagedObject<Block> blockManage = new ManagedObject<Block>("Block.prefab");
 }
 
-public class ManagedObject<T> where T : MonoBehaviour
+public class ManagedObject<T> where T : Component
 {
     ResourceManager resourceManager;
     private string key;
@@ -27,7 +53,7 @@ public class ManagedObject<T> where T : MonoBehaviour
         //리스트 속 아이템이 null일 경우 리스트를 클리어해줌
         DeSpawnedObject.RemoveAll(item => item == null);
 
-        if (DeSpawnedObject.Count == 0)
+        if (DeSpawnedObject.Count != 0)
         {
             T pooledObject = DeSpawnedObject[0];
             DeSpawnedObject.Remove(pooledObject);
