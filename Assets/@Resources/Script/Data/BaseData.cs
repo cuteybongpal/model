@@ -16,7 +16,7 @@ public class GameSettingData : BaseData
 public class StructureData : BaseData
 {
     /// <summary>
-    /// sd : structureData의 준말
+    /// bd : BlockData의 준말
     /// </summary>
-    public static string extention = "sd";
+    public static string extention = "bd";
 }

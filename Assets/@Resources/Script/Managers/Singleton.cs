@@ -12,7 +12,7 @@ public class Singleton<T> : MonoBehaviour where T : BaseManager, new()
         get { return instance; }
     }
 
-    public static J GetMethod<J>(int methodNum) where J : System.Delegate
+    public static J GetFunction<J>(int methodNum) where J : System.Delegate
     {
         if (instance == null)
             return default(J);

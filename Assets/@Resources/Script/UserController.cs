@@ -11,10 +11,16 @@ public class UserController : MonoBehaviour
 
     Func<Block> spawnBlock;
     Action<Block> deSpawnBlock;
+
+    Action<Block> addBlock;
+    Action buildComplete;
     void Start()
     {
-        spawnBlock = Singleton<ObjectManager>.Intstance.GetMethod<Func<Block>>((int)ObjectManager.MethodNum.BlockSpawn);
-        deSpawnBlock = Singleton<ObjectManager>.Intstance.GetMethod<Action<Block>>((int)ObjectManager.MethodNum.BlockDeSpawn);
+        spawnBlock = Singleton<ObjectManager>.GetFunction<Func<Block>>((int)ObjectManager.MethodNum.BlockSpawn);
+        deSpawnBlock = Singleton<ObjectManager>.GetFunction<Action<Block>>((int)ObjectManager.MethodNum.BlockDeSpawn);
+
+        addBlock = Singleton<ModelManager>.GetFunction<Action<Block>>((int)ModelManager.MethodNum.Add);
+        buildComplete = Singleton<ModelManager>.GetFunction<Action>((int)ModelManager.MethodNum.CompleteModel);
 
         if (spawnBlock == null)
             Debug.Log("½ºÆù ³Î");
@@ -82,6 +88,10 @@ public class UserController : MonoBehaviour
         {
             moveDirection += Vector3.up * Time.deltaTime;
         }
+        if (Input.GetKeyDown(KeyCode.RightShift))
+        {
+            buildComplete?.Invoke();
+        }
         transform.position += moveDirection.normalized * Time.deltaTime * 10;
     }
 
@@ -92,6 +102,7 @@ public class UserController : MonoBehaviour
         while (isActiveAndEnabled && Application.isPlaying)
         {
             RaycastHit[] hits = Physics.RaycastAll(transform.position, transform.forward, 100);
+            Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
             Debug.DrawRay(transform.position, transform.forward * 100, Color.red);
             Vector3 hitPos = Vector3.zero;
             if (hits.Length <= 0)
@@ -105,9 +116,11 @@ public class UserController : MonoBehaviour
                 hitPos = hit.point;
                 break;
             }
-            hitPos.x = Mathf.Ceil(hitPos.x);
-            hitPos.y = Mathf.Ceil(hitPos.y);
-            hitPos.z = Mathf.Ceil(hitPos.z);
+            hitPos.x = Mathf.Round(hitPos.x);
+            hitPos.y = Mathf.Round(hitPos.y);
+            hitPos.z = Mathf.Round(hitPos.z);
+            if (hitPos.y == 0)
+                hitPos.y = 1;
 
             Block _block = spawnBlock?.Invoke();
             Color _color = _block.Color;
@@ -120,6 +133,11 @@ public class UserController : MonoBehaviour
                 Color color = _block.Color;
                 color.a = 1f;
                 _block.Color = color;
+                Vector3Int blockPos = new Vector3Int((int)hitPos.x, (int)hitPos.y, (int)hitPos.z);
+                Debug.Log(blockPos);
+                _block.Pos = blockPos;
+                addBlock?.Invoke(_block);
+                _block = null;
                 continue;
             }
             deSpawnBlock?.Invoke(_block);

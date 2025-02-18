@@ -24,7 +24,7 @@ public class ObjectManager :  Singleton<ObjectManager>, BaseManager
         }
     }
 
-    public new K GetMethod<K>(int methodNum) where K : Delegate
+    public K GetMethod<K>(int methodNum) where K : Delegate
     {
         switch ((MethodNum)methodNum)
         {
