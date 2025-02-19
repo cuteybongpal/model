@@ -47,13 +47,20 @@ public class UserController : MonoBehaviour
         float mouseDeltaY = Input.GetAxis("Mouse Y");
 
         Vector3 rotationDelta = new Vector3(-mouseDeltaY, mouseDeltaX, 0);
+        if (Input.GetKey(KeyCode.Mouse1))
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            if (rotationDelta.x + transform.localRotation.x - Mathf.Abs(minXAngle) > 0)
+                rotationDelta.x = rotationDelta.x + transform.localRotation.x - Mathf.Abs(minXAngle);
+            else if (rotationDelta.x + transform.localRotation.x - Mathf.Abs(maxXAngle) > 0)
+                rotationDelta.x = rotationDelta.x + transform.localRotation.x - Mathf.Abs(maxXAngle);
 
-        if (rotationDelta.x + transform.localRotation.x - Mathf.Abs(minXAngle) > 0)
-            rotationDelta.x = rotationDelta.x + transform.localRotation.x - Mathf.Abs(minXAngle);
-        else if (rotationDelta.x + transform.localRotation.x - Mathf.Abs(maxXAngle) > 0)
-            rotationDelta.x = rotationDelta.x + transform.localRotation.x - Mathf.Abs(maxXAngle);
-
-        transform.localRotation = Quaternion.Euler(transform.rotation.eulerAngles + rotationDelta);
+            transform.localRotation = Quaternion.Euler(transform.rotation.eulerAngles + rotationDelta);
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.None;
+        }
     }
     //캐릭터 움직이는 함수
     private void MoveCharacter()
@@ -101,9 +108,10 @@ public class UserController : MonoBehaviour
 
         while (isActiveAndEnabled && Application.isPlaying)
         {
-            RaycastHit[] hits = Physics.RaycastAll(transform.position, transform.forward, 100);
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit[] hits = Physics.RaycastAll(transform.position, ray.direction, 100);
             Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
-            Debug.DrawRay(transform.position, transform.forward * 100, Color.red);
+            Debug.DrawRay(transform.position, ray.direction * 100, Color.red);
             Vector3 hitPos = Vector3.zero;
             if (hits.Length <= 0)
             {
@@ -113,14 +121,14 @@ public class UserController : MonoBehaviour
 
             foreach (RaycastHit hit in hits)
             {
-                hitPos = hit.point;
+                hitPos = hit.point - ray.direction * .001f;
                 break;
             }
+
             hitPos.x = Mathf.Round(hitPos.x);
             hitPos.y = Mathf.Round(hitPos.y);
             hitPos.z = Mathf.Round(hitPos.z);
-            if (hitPos.y == 0)
-                hitPos.y = 1;
+            
 
             Block _block = spawnBlock?.Invoke();
             Color _color = _block.Color;
