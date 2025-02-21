@@ -43,11 +43,15 @@ f {0}//{1} {2}//{3} {4}//{5}
     ///  0 : xPos
     ///  1 : yPos
     ///  2 : zPos
-    ///  3 : rgb r (0~1)
-    ///  4 : rgb g (0~1)
-    ///  5 : rgb b (0~1)
+    ///  3 : surface name
+    ///  4 : rgb r (0~1)
+    ///  5 : rgb g (0~1)
+    ///  6 : rgb b (0~1)
     /// </summary>
     public static string dbFormat = @"
-
+position:{0},{1},{2}
+texture:{3}
+color:{4},{5},{6}
+//
 ";
 }

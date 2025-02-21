@@ -63,9 +63,15 @@ public class DataManager
         File.WriteAllText("Assets/@Resources/Output/output.obj", objContent);
         Debug.Log("¼º°ø");
     }
-    public void Export2bd()
+    public void Export2bd(List<Block> blocks)
     {
-
+        string bdcontent = "";
+        for (int i = 0; i < blocks.Count; i++)
+        {
+            Block block = blocks[i];
+            bdcontent += String.Format(ExportFormat.dbFormat, block.Pos.x, block.Pos.y, block.Pos.z, "", Mathf.RoundToInt(block.Color.r * 255), Mathf.RoundToInt(block.Color.g * 255), Mathf.RoundToInt(block.Color.b * 255));
+        }
+        File.WriteAllText("Assets/@Resources/Output/output.bd", bdcontent);
     } 
 
 }

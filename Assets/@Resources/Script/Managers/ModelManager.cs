@@ -52,7 +52,7 @@ public class ModelManager : Singleton<ModelManager>, BaseManager
     private void BuildComplete()
     {
         dataManager.Export2obj(blocks);
-        dataManager.Export2bd();
+        dataManager.Export2bd(blocks);
     }
 
     private void LoadModel()
