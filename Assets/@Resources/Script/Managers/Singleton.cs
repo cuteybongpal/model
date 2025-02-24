@@ -4,20 +4,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Singleton<T> : MonoBehaviour where T : BaseManager, new()
+public class Singleton<T> : MonoBehaviour
 {
     protected static T instance;
-    public static T Intstance
+    public static T Instance
     {
-        get { return instance; }
-    }
-
-    public static J GetFunction<J>(int methodNum) where J : System.Delegate
-    {
-        if (instance == null)
-            return default(J);
-
-        J method = instance.GetMethod<J>(methodNum);
-        return method;
+        get
+        {
+            return instance;
+        }
     }
 }

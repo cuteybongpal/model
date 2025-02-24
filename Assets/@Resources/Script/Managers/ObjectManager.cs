@@ -5,18 +5,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.AI;
 
-public class ObjectManager :  Singleton<ObjectManager>, BaseManager
+public class ObjectManager :  Singleton<ObjectManager>
 {
-    public enum MethodNum
-    {
-        BlockSpawn = 0,
-        BlockDeSpawn = 1
-    }
     private void Awake()
     {
         if (instance == null)
         {
             instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -24,18 +20,6 @@ public class ObjectManager :  Singleton<ObjectManager>, BaseManager
         }
     }
 
-    public K GetMethod<K>(int methodNum) where K : Delegate
-    {
-        switch ((MethodNum)methodNum)
-        {
-            case MethodNum.BlockSpawn:
-                return new Func<Block>(blockManage.Spawn) as K;
-            case MethodNum.BlockDeSpawn:
-                return new Action<Block>(blockManage.DeSpawn) as K;
-        }
-        
-        return default(K);
-    }
     ManagedObject<Block> blockManage = new ManagedObject<Block>("Block.prefab");
 }
 

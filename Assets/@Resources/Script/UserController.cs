@@ -16,11 +16,11 @@ public class UserController : MonoBehaviour
     Action buildComplete;
     void Start()
     {
-        spawnBlock = Singleton<ObjectManager>.GetFunction<Func<Block>>((int)ObjectManager.MethodNum.BlockSpawn);
-        deSpawnBlock = Singleton<ObjectManager>.GetFunction<Action<Block>>((int)ObjectManager.MethodNum.BlockDeSpawn);
+        //spawnBlock = Singleton<ObjectManager>.GetFunction<Func<Block>>((int)ObjectManager.MethodNum.BlockSpawn);
+        //deSpawnBlock = Singleton<ObjectManager>.GetFunction<Action<Block>>((int)ObjectManager.MethodNum.BlockDeSpawn);
 
-        addBlock = Singleton<ModelManager>.GetFunction<Action<Block>>((int)ModelManager.MethodNum.Add);
-        buildComplete = Singleton<ModelManager>.GetFunction<Action>((int)ModelManager.MethodNum.CompleteModel);
+        //addBlock = Singleton<ModelManager>.GetFunction<Action<Block>>((int)ModelManager.MethodNum.Add);
+        //buildComplete = Singleton<ModelManager>.GetFunction<Action>((int)ModelManager.MethodNum.CompleteModel);
 
         if (spawnBlock == null)
             Debug.Log("½ºÆù ³Î");
