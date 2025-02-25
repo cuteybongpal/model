@@ -20,7 +20,7 @@ public class ObjectManager :  Singleton<ObjectManager>
         }
     }
 
-    ManagedObject<Block> blockManage = new ManagedObject<Block>("Block.prefab");
+    public ManagedObject<Block> blockManager = new ManagedObject<Block>("Block.prefab");
 }
 
 public class ManagedObject<T> where T : Component

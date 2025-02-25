@@ -3,30 +3,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class UserController : MonoBehaviour
 {
     public float maxXAngle;
     public float minXAngle;
 
-    Func<Block> spawnBlock;
-    Action<Block> deSpawnBlock;
-
-    Action<Block> addBlock;
-    Action buildComplete;
     void Start()
     {
-        //spawnBlock = Singleton<ObjectManager>.GetFunction<Func<Block>>((int)ObjectManager.MethodNum.BlockSpawn);
-        //deSpawnBlock = Singleton<ObjectManager>.GetFunction<Action<Block>>((int)ObjectManager.MethodNum.BlockDeSpawn);
-
-        //addBlock = Singleton<ModelManager>.GetFunction<Action<Block>>((int)ModelManager.MethodNum.Add);
-        //buildComplete = Singleton<ModelManager>.GetFunction<Action>((int)ModelManager.MethodNum.CompleteModel);
-
-        if (spawnBlock == null)
-            Debug.Log("스폰 널");
-        if (deSpawnBlock == null)
-            Debug.Log("디스폰 널");
-
         UserControlLoop().Forget();
         PreviewAndPlaceBlock();
     }
@@ -95,10 +80,6 @@ public class UserController : MonoBehaviour
         {
             moveDirection += Vector3.up * Time.deltaTime;
         }
-        if (Input.GetKeyDown(KeyCode.RightShift))
-        {
-            buildComplete?.Invoke();
-        }
         transform.position += moveDirection.normalized * Time.deltaTime * 10;
     }
 
@@ -108,6 +89,13 @@ public class UserController : MonoBehaviour
 
         while (isActiveAndEnabled && Application.isPlaying)
         {
+            //마우스 커서가 UI요소에 있을 경우 컨티뉴함
+            if (!EventSystem.current.IsPointerOverGameObject())
+            {
+                await UniTask.Yield();
+                continue;
+            }
+            //마우스 커서 위치를 레이로 반환해줌
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit[] hits = Physics.RaycastAll(transform.position, ray.direction, 100);
             Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
@@ -128,9 +116,9 @@ public class UserController : MonoBehaviour
             hitPos.x = Mathf.Round(hitPos.x);
             hitPos.y = Mathf.Round(hitPos.y);
             hitPos.z = Mathf.Round(hitPos.z);
-            
 
-            Block _block = spawnBlock?.Invoke();
+
+            Block _block = ObjectManager.Instance.blockManager.Spawn();
             Color _color = _block.Color;
             _color.a = .5f;
             _block.Color = _color;
@@ -144,11 +132,11 @@ public class UserController : MonoBehaviour
                 Vector3Int blockPos = new Vector3Int((int)hitPos.x, (int)hitPos.y, (int)hitPos.z);
                 Debug.Log(blockPos);
                 _block.Pos = blockPos;
-                addBlock?.Invoke(_block);
+                ModelManager.Instance.Add(_block);
                 _block = null;
                 continue;
             }
-            deSpawnBlock?.Invoke(_block);
+            ObjectManager.Instance.blockManager.DeSpawn(_block);
         }
     }
 }

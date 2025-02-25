@@ -3,22 +3,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UserManager : Singleton<UserManager>, BaseManager
-
+public class UserManager : Singleton<UserManager>
 {
-    public T GetMethod<T>(int methodNum) where T : Delegate
+    public enum UserState
     {
-        throw new NotImplementedException();
+        PlaceMode,
+        RemoveMode,
+        PaintMode
     }
-
-    void Start()
+    public UserState UserMode = UserState.PlaceMode;
+    private void Awake()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(instance);
+        }
     }
 }
