@@ -20,15 +20,15 @@ public static class ExportFormat
 
     /// <summary>
     ///  0 : 정점
-    ///  1 : rgb r (0~1)
-    ///  2 : rgb g (0~1)
-    ///  3 : rgb b (0~1)
+    ///  1 : 면
+    ///  2 : 머테리얼 이름
     /// </summary>
     public static string objFormat = @"
-# 정점(Vertex) 좌표
+
 {0}
 
-# 면 정의 (Face)
+usemtl {2}
+
 {1}
 
 ";

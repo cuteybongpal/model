@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using JetBrains.Annotations;
 using UnityEditor.AddressableAssets.HostingServices;
 using UnityEngine;
 
@@ -73,5 +74,38 @@ public class DataManager
         }
         File.WriteAllText("Assets/@Resources/Output/output.bd", bdcontent);
     } 
+    public void Export2mtl(List<Block> blocks)
+    {
+        List<Mtl> materials = new List<Mtl>();
+        foreach (Block block in blocks)
+        {
+            Mtl mtl = new Mtl();
+            mtl.material = block.Material.name;
+            mtl.color = block.Color;
+            bool isNotOverlap = false;
+            foreach (Mtl mat in materials)
+            {
+                if (mat.material == mtl.material && mat.color == mtl.color)
+                {
+                    isNotOverlap = false;
+                    break;
+                }
+                else
+                {
+                    isNotOverlap = true;
+                }
+            }
 
+            if (isNotOverlap) 
+            {
+                materials.Add(mtl);
+            }
+        }
+
+    }
+    struct Mtl
+    {
+        public string material;
+        public Color color;
+    }
 }

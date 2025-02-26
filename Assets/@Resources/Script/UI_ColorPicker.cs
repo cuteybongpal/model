@@ -10,10 +10,15 @@ public class UI_ColorPicker : MonoBehaviour
     Image picker;
     Image pallete;
     Vector2 sizeOfPallete = Vector2.zero;
-    Color selectedColor = Color.white;
+    public Color selectedColor = Color.white;
     public Color SelectedColor
     {
-        get { return GetColor(); }
+        get { return selectedColor; }
+        set
+        {
+            selectedColor = value;
+            ModelManager.Instance.CurrentColor = selectedColor;
+        }
     }
     void Start()
     {
@@ -35,8 +40,8 @@ public class UI_ColorPicker : MonoBehaviour
             Mathf.Clamp(localPoint.x + pallete.rectTransform.position.x, pallete.rectTransform.position.x - sizeOfPallete.x / 2, pallete.rectTransform.position.x + sizeOfPallete.x / 2),
             Mathf.Clamp(localPoint.y + pallete.rectTransform.position.y, pallete.rectTransform.position.y - sizeOfPallete.y / 2, pallete.rectTransform.position.y + sizeOfPallete.y / 2)
             );
-        Debug.Log(pickerPos);
         picker.rectTransform.position = pickerPos;
+        GetColor();
     }
     public void OnPointerDown(BaseEventData eventData)
     {
@@ -49,22 +54,30 @@ public class UI_ColorPicker : MonoBehaviour
             Mathf.Clamp(localPoint.x + pallete.rectTransform.position.x, pallete.rectTransform.position.x - sizeOfPallete.x / 2, pallete.rectTransform.position.x + sizeOfPallete.x / 2),
             Mathf.Clamp(localPoint.y + pallete.rectTransform.position.y, pallete.rectTransform.position.y - sizeOfPallete.y / 2, pallete.rectTransform.position.y + sizeOfPallete.y / 2)
             );
-        Debug.Log(pickerPos);
         picker.rectTransform.position = pickerPos;
         GetColor();
     }
 
     Color GetColor()
     {
-        Vector2 position = (Vector2)picker.transform.position - (Vector2)pallete.transform.position + sizeOfPallete / 2;
+        Vector2 position = (Vector2)picker.rectTransform.position - (Vector2)pallete.rectTransform.position + sizeOfPallete / 2;
 
-        Vector2 normalized = new Vector2(
-            (position.x / (pallete.GetComponent<RectTransform>().rect.width)),
-            (position.y / (pallete.GetComponent<RectTransform>().rect.height)));
+        // 좌표를 0~1 범위로 정규화
+        float uvX = position.x / sizeOfPallete.x;
+        float uvY = position.y / sizeOfPallete.y;
 
+        // 텍스처에서 색상 샘플링 (GetPixelBilinear 사용)
         Texture2D texture = pallete.mainTexture as Texture2D;
-        Color circularSelectedColor = texture.GetPixelBilinear(normalized.x, normalized.y);
-        selectedColor = circularSelectedColor;
+        if (texture == null)
+        {
+            Debug.LogError("Palette texture is missing!");
+            return Color.white;
+        }
+
+        Color circularSelectedColor = texture.GetPixelBilinear(uvX, uvY);
+        Debug.Log(circularSelectedColor);
+        SelectedColor = circularSelectedColor;
+        
         return circularSelectedColor;
     }
 }

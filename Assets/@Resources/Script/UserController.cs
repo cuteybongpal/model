@@ -9,7 +9,8 @@ public class UserController : MonoBehaviour
 {
     public float maxXAngle;
     public float minXAngle;
-
+    //test 용도
+    public Material Material;
     void Start()
     {
         UserControlLoop().Forget();
@@ -80,6 +81,9 @@ public class UserController : MonoBehaviour
         {
             moveDirection += Vector3.up * Time.deltaTime;
         }
+        if (Input.GetKey(KeyCode.RightShift)){
+            ModelManager.Instance.BuildComplete();
+        }
         transform.position += moveDirection.normalized * Time.deltaTime * 10;
     }
 
@@ -90,7 +94,7 @@ public class UserController : MonoBehaviour
         while (isActiveAndEnabled && Application.isPlaying)
         {
             //마우스 커서가 UI요소에 있을 경우 컨티뉴함
-            if (!EventSystem.current.IsPointerOverGameObject())
+            if (EventSystem.current.IsPointerOverGameObject())
             {
                 await UniTask.Yield();
                 continue;
@@ -119,18 +123,16 @@ public class UserController : MonoBehaviour
 
 
             Block _block = ObjectManager.Instance.blockManager.Spawn();
-            Color _color = _block.Color;
-            _color.a = .5f;
-            _block.Color = _color;
+            _block.Material = Material;
+            _block.Color = new Color(ModelManager.Instance.CurrentColor.r, ModelManager.Instance.CurrentColor.g, ModelManager.Instance.CurrentColor.b, 0.5f);
             _block.transform.position = hitPos;
             await UniTask.Yield();
-            if (Input.GetMouseButtonUp(0))
+            if (Input.GetMouseButtonDown(0))
             {
                 Color color = _block.Color;
                 color.a = 1f;
                 _block.Color = color;
                 Vector3Int blockPos = new Vector3Int((int)hitPos.x, (int)hitPos.y, (int)hitPos.z);
-                Debug.Log(blockPos);
                 _block.Pos = blockPos;
                 ModelManager.Instance.Add(_block);
                 _block = null;

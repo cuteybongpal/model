@@ -22,22 +22,6 @@ public class ModelManager : Singleton<ModelManager>
         set
         {
             currentColor = value;
-
-            bool isFilled = true;
-            for (int i = 0; i < UsedColor.Length; i++)
-            {
-                if (UsedColor[i] == null)
-                {
-                    isFilled &= true;
-                    UsedColor[i] = value;
-                }
-                else
-                    isFilled &= false;
-            }
-            if (isFilled)
-            {
-
-            }
         }
     }
 
@@ -46,6 +30,7 @@ public class ModelManager : Singleton<ModelManager>
         if (instance == null)
         {
             instance = this;
+            CurrentColor = Color.white;
         }
         else
         {

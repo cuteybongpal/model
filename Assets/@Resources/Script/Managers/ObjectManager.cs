@@ -36,7 +36,6 @@ public class ManagedObject<T> where T : Component
     {
         //리스트 속 아이템이 null일 경우 리스트를 클리어해줌
         DeSpawnedObject.RemoveAll(item => item == null);
-
         if (DeSpawnedObject.Count != 0)
         {
             T pooledObject = DeSpawnedObject[0];
@@ -50,6 +49,7 @@ public class ManagedObject<T> where T : Component
         {
             GameObject SpawnObject = resourceManager.Load<GameObject>(key);
             T spawnObject = GameObject.Instantiate(SpawnObject).GetComponent<T>();
+
             SpawnedObject.Add(spawnObject);
             return spawnObject;
         }
