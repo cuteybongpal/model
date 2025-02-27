@@ -58,7 +58,7 @@ public class DataManager
             //¸é Ãß°¡
             for (int i = 0; i < 12; i++)
             {
-                face += String.Format(ExportFormat.FaceFormat, ExportFormat.Face1[i] + j * 8, ExportFormat.Face2[i] + j * 8, ExportFormat.Face3[i] + j * 8, ExportFormat.Face4[i] + j * 8, ExportFormat.Face5[i] + j * 8, ExportFormat.Face6[i] + j * 8);
+                face += String.Format(ExportFormat.FaceFormat, ExportFormat.Face1[i] + j * 8, ExportFormat.Face2[i] + j * 8, ExportFormat.Face3[i] + j * 8, ExportFormat.Face4[i] + j * 8, ExportFormat.Face5[i] + j * 8, ExportFormat.Face6[i] + j * 8, ExportFormat.Vt1[i] + j * 4, ExportFormat.Vt2[i] + j * 4, ExportFormat.Vt3[i] + j * 4);
             }
             string mtlName = String.Format(ExportFormat.MtlName, blocks[j].Color.r, blocks[j].Color.g, blocks[j].Color.b, blocks[j].Material.name);
             objContent += String.Format(ExportFormat.ObjFormat, vertex, face, mtlName);

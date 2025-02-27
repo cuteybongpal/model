@@ -1,10 +1,5 @@
 
-newmtl 1_1_1_WallStone
+newmtl 0.4753937_0.01104677_0_WallStone
 
-Kd 1 1 1
-map_Kd WallStone.png
-
-newmtl 1_0.0627451_0.0627451_WallStone
-
-Kd 1 0.0627451 0.0627451
+Kd 0.4753937 0.01104677 0
 map_Kd WallStone.png
