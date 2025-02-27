@@ -81,7 +81,7 @@ public class UserController : MonoBehaviour
         {
             moveDirection += Vector3.up * Time.deltaTime;
         }
-        if (Input.GetKey(KeyCode.RightShift)){
+        if (Input.GetKeyDown(KeyCode.RightShift)){
             ModelManager.Instance.BuildComplete();
         }
         transform.position += moveDirection.normalized * Time.deltaTime * 10;

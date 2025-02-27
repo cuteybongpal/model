@@ -49,6 +49,7 @@ public class ModelManager : Singleton<ModelManager>
     {
         dataManager.Export2obj(blocks);
         dataManager.Export2bd(blocks);
+        dataManager.Export2mtl(blocks);
     }
     public void LoadModel()
     {
