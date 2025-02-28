@@ -10,7 +10,7 @@ using UnityEngine.AI;
 //데이터를 불러오고 데이터를 저장하는 역할을 한다.
 public class DataManager
 {
-
+    TextureColorChanger colorChanger = new TextureColorChanger();
     public enum DataExtention {
         xml,
         bd,
@@ -82,12 +82,12 @@ public class DataManager
         foreach (Block block in blocks)
         {
             Mtl mtl = new Mtl();
-            mtl.material = block.Material.name;
-            mtl.color = block.Color;
+            mtl.Material = block.Material;
+            mtl.Color = block.Color;
             bool isNotOverlap = true;
             foreach (Mtl mat in materials)
             {
-                if (mat.material == mtl.material && mat.color == mtl.color)
+                if (mat.Material == mtl.Material && mat.Color == mtl.Color)
                 {
                     isNotOverlap = false;
                     break;
@@ -107,15 +107,21 @@ public class DataManager
 
         foreach (Mtl mtl in materials)
         {
-            string mtlName = String.Format(ExportFormat.MtlName, mtl.color.r, mtl.color.g, mtl.color.b, mtl.material);
-            mtlContent += String.Format(ExportFormat.MtlFormat, mtlName, mtl.material, mtl.color.r, mtl.color.g, mtl.color.b);
+            colorChanger.ChangeTextureColor(mtl.Material, mtl.Color);
+        }
+
+
+        foreach (Mtl mtl in materials)
+        {
+            string mtlName = String.Format(ExportFormat.MtlName, mtl.Color.r, mtl.Color.g, mtl.Color.b, mtl.Material.name);
+            mtlContent += String.Format(ExportFormat.MtlFormat, mtlName, $"{mtl.Material.mainTexture.name}_{mtl.Color.r}_{mtl.Color.g}_{mtl.Color.b}", mtl.Color.r, mtl.Color.g, mtl.Color.b);
         }
         Debug.Log(mtlContent);
         File.WriteAllText("Assets/@Resources/Output/output.mtl", mtlContent);
     }
     struct Mtl
     {
-        public string material;
-        public Color color;
+        public Material Material;
+        public Color Color;
     }
 }

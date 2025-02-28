@@ -75,7 +75,6 @@ public class UI_ColorPicker : MonoBehaviour
         }
 
         Color circularSelectedColor = texture.GetPixelBilinear(uvX, uvY);
-        Debug.Log(circularSelectedColor);
         SelectedColor = circularSelectedColor;
         
         return circularSelectedColor;
