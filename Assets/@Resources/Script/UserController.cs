@@ -124,7 +124,7 @@ public class UserController : MonoBehaviour
 
             Block _block = ObjectManager.Instance.blockManager.Spawn();
             _block.Material = Material;
-            _block.Color = new Color(ModelManager.Instance.CurrentColor.r, ModelManager.Instance.CurrentColor.g, ModelManager.Instance.CurrentColor.b, 0.5f);
+            _block.Color = UserManager.Instance.CurrentColor;
             _block.transform.position = hitPos;
             await UniTask.Yield();
             if (Input.GetMouseButtonDown(0))

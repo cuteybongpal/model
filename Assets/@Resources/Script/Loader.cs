@@ -10,9 +10,12 @@ public class Loader : MonoBehaviour
     void Start()
     {
         resourceManager = new ResourceManager();
-        resourceManager.LoadAllAsync<GameObject>("default", () =>
+        resourceManager.LoadAllAsync<GameObject>("Prefab", () =>
         {
-            SceneManager.LoadScene(1);
+            resourceManager.LoadAllAsync<Material>("Material", () =>
+            {
+                SceneManager.LoadScene(1);
+            });
         });
 
     }

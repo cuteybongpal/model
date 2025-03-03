@@ -17,7 +17,7 @@ public class UI_ColorPicker : MonoBehaviour
         set
         {
             selectedColor = value;
-            ModelManager.Instance.CurrentColor = selectedColor;
+            UserManager.Instance.CurrentColor = selectedColor;
         }
     }
     void Start()

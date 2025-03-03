@@ -14,23 +14,11 @@ public class ModelManager : Singleton<ModelManager>
 
     List<Block> blocks = new List<Block>();
     DataManager dataManager = new DataManager();
-    Color[] UsedColor = new Color[5];
-    private Color currentColor;
-    public Color CurrentColor 
-    {
-        get { return currentColor; }
-        set
-        {
-            currentColor = value;
-        }
-    }
-
     private void Awake()
     {
         if (instance == null)
         {
             instance = this;
-            CurrentColor = Color.white;
         }
         else
         {

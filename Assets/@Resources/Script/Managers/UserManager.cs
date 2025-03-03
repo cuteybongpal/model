@@ -12,6 +12,9 @@ public class UserManager : Singleton<UserManager>
         PaintMode
     }
     public UserState UserMode = UserState.PlaceMode;
+    public Material CurrentMaterial = null;
+    public Color CurrentColor = Color.white;
+
     private void Awake()
     {
         if (instance == null)

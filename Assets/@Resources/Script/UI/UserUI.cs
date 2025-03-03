@@ -11,6 +11,12 @@ public class UserUI : MonoBehaviour
     public UI_ColorPicker UI_ColorPicker;
     public List<UI_ButtonController> Buttons;
     public Composite composite;
+    Type[] types = 
+    {
+        typeof(UI_ColorPicker),
+        typeof(UI_ButtonController),
+        typeof(UI_ImageController),
+    };
     void Start()
     {
         composite = findChild(transform, null);
@@ -26,19 +32,27 @@ public class UserUI : MonoBehaviour
                 command = new ChangeMode(_button.num);
                 break;
             case UI_ButtonController.OnClickEvent.ChangeMaterial:
-                command = new ChangeMode(_button.num);
+                command = new ChangeMaterial(_button.num);
                 break;
             case UI_ButtonController.OnClickEvent.Save:
-
                 break;
             case UI_ButtonController.OnClickEvent.DelateAll:
-
+                break;
+            case UI_ButtonController.OnClickEvent.ChangeColor:
+                Color color =  _button.GetComponent<Image>().tintColor;
+                command = new ChangeColor(ref color);
                 break;
             default:
                 break;
         }
         _button.AddOnClickEvent(new Action(command.Execute));
+    }
 
+    public void ChagneColorHistory(List<Color> colors)
+    {
+        composite.Operation<UI_ImageController>(new Action<UI_ImageController>((ui_imageController) =>{
+
+        }));
     }
     Composite findChild(Transform transform, Composite _composite)
     {
@@ -60,13 +74,17 @@ public class UserUI : MonoBehaviour
             }
             else
             {
-                UI_ButtonController button = child.GetComponent<UI_ButtonController>();
-                UI_ColorPicker colorPicker = child.GetComponent<UI_ColorPicker>();
-
-                if (button != null)
-                    compos.Add(new Leaf<UI_ButtonController>(button));
-                else if (colorPicker != null)
-                    compos.Add(new Leaf<UI_ColorPicker>(colorPicker));
+                for (int j = 0; j < types.Length; j++)
+                {
+                    Component component = child.GetComponent(types[j]);
+                    if (component != null)
+                    {
+                        Type type = typeof(Leaf<>);
+                        type.MakeGenericType(types[j]);
+                        object leaf = Activator.CreateInstance(type, component);
+                        compos.Add(leaf as Element);
+                    }
+                }
             }
         }
         return compos;

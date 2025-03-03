@@ -21,7 +21,7 @@ MonoBehaviour:
     m_Address: Block.prefab
     m_ReadOnly: 0
     m_SerializedLabels:
-    - default
+    - Prefab
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 80636f785515ed945b6deba97fa673fe, type: 2}

@@ -11,6 +11,7 @@ public class UI_ButtonController : MonoBehaviour
     {
         ChangeMode,
         ChangeMaterial,
+        ChangeColor,
         //테스트용도로 집어넣은 것 
         Save,
         DelateAll,
