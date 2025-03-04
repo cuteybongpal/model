@@ -25,6 +25,9 @@ public class UI_ButtonController : MonoBehaviour
     }
     public void AddOnClickEvent(Action action)
     {
+        Debug.Log(gameObject.name);
+        if (button == null)
+            button = GetComponent<Button>();
         button.onClick.AddListener(() =>
         {
             action.Invoke();

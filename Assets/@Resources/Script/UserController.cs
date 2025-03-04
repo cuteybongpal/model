@@ -13,18 +13,13 @@ public class UserController : MonoBehaviour
     public Material Material;
     void Start()
     {
-        UserControlLoop().Forget();
         PreviewAndPlaceBlock();
     }
     //유니티 생명주기 함수
-    async UniTaskVoid UserControlLoop()
+    private void Update()
     {
-        while (Application.isPlaying && isActiveAndEnabled)
-        {
-            RotateView();
-            MoveCharacter();
-            await UniTask.Yield();
-        }
+        RotateView();
+        MoveCharacter();
     }
     //화면 회전
     void RotateView()
@@ -81,9 +76,6 @@ public class UserController : MonoBehaviour
         {
             moveDirection += Vector3.up * Time.deltaTime;
         }
-        if (Input.GetKeyDown(KeyCode.RightShift)){
-            ModelManager.Instance.BuildComplete();
-        }
         transform.position += moveDirection.normalized * Time.deltaTime * 10;
     }
 
@@ -91,7 +83,7 @@ public class UserController : MonoBehaviour
     private async void PreviewAndPlaceBlock()
     {
 
-        while (isActiveAndEnabled && Application.isPlaying)
+        while (Application.isPlaying)
         {
             //마우스 커서가 UI요소에 있을 경우 컨티뉴함
             if (EventSystem.current.IsPointerOverGameObject())

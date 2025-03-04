@@ -68,3 +68,17 @@ public class ChangeColor : ICommand
         this.color = color;
     }
 }
+public class Save : ICommand
+{
+    public void Execute()
+    {
+        ModelManager.Instance.BuildComplete();
+    }
+}
+public class DeleteAll : ICommand
+{
+    public void Execute()
+    {
+        ModelManager.Instance.RemoveAll();
+    }
+}

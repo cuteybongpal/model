@@ -33,6 +33,14 @@ public class ModelManager : Singleton<ModelManager>
     {
         blocks.Remove(block);
     }
+    public void RemoveAll()
+    {
+        foreach (Block block in blocks)
+        {
+            blocks.Remove(block);
+            ObjectManager.Instance.blockManager.DeSpawn(block);
+        }
+    }
     public void BuildComplete()
     {
         dataManager.Export2obj(blocks);

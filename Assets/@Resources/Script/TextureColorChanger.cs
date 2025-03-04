@@ -28,6 +28,6 @@ public class TextureColorChanger
             }
         }
         tex.Apply();
-        File.WriteAllBytes($"Assets/@Resources/Output/{texture.name}_{color.r}_{color.g}_{color.b}.png", tex.EncodeToPNG());
+        File.WriteAllBytes($"Assets/@Resources/Output/{texture.mainTexture.name}_{color.r}_{color.g}_{color.b}.png", tex.EncodeToPNG());
     }
 }

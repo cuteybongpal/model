@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 
 public class UserUI : MonoBehaviour
 {
@@ -26,6 +26,11 @@ public class UserUI : MonoBehaviour
     void AddButtonEvent(UI_ButtonController _button)
     {
         ICommand command = null;
+        if (_button == null)
+        {
+            Debug.Log("¹öÆ°ÀÌ null");
+        }
+
         switch (_button.ClickEvent)
         {
             case UI_ButtonController.OnClickEvent.ChangeMode:
@@ -35,11 +40,13 @@ public class UserUI : MonoBehaviour
                 command = new ChangeMaterial(_button.num);
                 break;
             case UI_ButtonController.OnClickEvent.Save:
+                command = new Save();
                 break;
             case UI_ButtonController.OnClickEvent.DelateAll:
+                command = new DeleteAll();
                 break;
             case UI_ButtonController.OnClickEvent.ChangeColor:
-                Color color =  _button.GetComponent<Image>().tintColor;
+                Color color =  _button.gameObject.GetComponent<Image>().color;
                 command = new ChangeColor(ref color);
                 break;
             default:
@@ -77,13 +84,14 @@ public class UserUI : MonoBehaviour
                 for (int j = 0; j < types.Length; j++)
                 {
                     Component component = child.GetComponent(types[j]);
-                    if (component != null)
-                    {
-                        Type type = typeof(Leaf<>);
-                        type.MakeGenericType(types[j]);
-                        object leaf = Activator.CreateInstance(type, component);
-                        compos.Add(leaf as Element);
-                    }
+
+                    if (component == null)
+                        continue;
+
+                    Type type = typeof(Leaf<>);
+                    Debug.Log($"{component.GetType()}, {component}");
+                    object leaf = Activator.CreateInstance(type.MakeGenericType(component.GetType()), new object[] { component });
+                    compos.Add(leaf as Element);
                 }
             }
         }
