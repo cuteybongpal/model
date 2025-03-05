@@ -6,7 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UserUI : MonoBehaviour
+public class UserUI : UI_Base
 {
     public UI_ColorPicker UI_ColorPicker;
     public List<UI_ButtonController> Buttons;
@@ -89,15 +89,14 @@ public class UserUI : MonoBehaviour
                         continue;
 
                     Type type = typeof(Leaf<>);
-                    Debug.Log($"{component.GetType()}, {component}");
-                    object leaf = Activator.CreateInstance(type.MakeGenericType(component.GetType()), new object[] { component });
+                    Type genericType = type.MakeGenericType(component.GetType());
+                    object leaf = Activator.CreateInstance(genericType,new object[] {component});
                     compos.Add(leaf as Element);
                 }
             }
         }
         return compos;
     }
-    
 }
 
 public interface Element
@@ -110,7 +109,7 @@ public class Leaf<T> : Element where T : Component
     public T Compo;
     public void Operation<J>(Action<J> action) where J : Component
     {
-        if (Compo is Component)
+        if (typeof(T) == typeof(J))
         {
             action.Invoke(Compo as J);
         }

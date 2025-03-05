@@ -14,6 +14,8 @@ public class ModelManager : Singleton<ModelManager>
 
     List<Block> blocks = new List<Block>();
     DataManager dataManager = new DataManager();
+
+
     private void Awake()
     {
         if (instance == null)
@@ -28,6 +30,7 @@ public class ModelManager : Singleton<ModelManager>
     public void Add(Block block)
     {
         blocks.Add(block);
+
     }
     public void Remove(Block block)
     {
