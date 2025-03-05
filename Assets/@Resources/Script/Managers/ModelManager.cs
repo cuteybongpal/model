@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class ModelManager : Singleton<ModelManager>
@@ -14,7 +16,7 @@ public class ModelManager : Singleton<ModelManager>
 
     List<Block> blocks = new List<Block>();
     DataManager dataManager = new DataManager();
-
+    List<Color> usedColor = new List<Color>() { Color.white };
 
     private void Awake()
     {
@@ -31,6 +33,31 @@ public class ModelManager : Singleton<ModelManager>
     {
         blocks.Add(block);
 
+
+
+        bool isDuplicate = false;
+        foreach (Color blockColor in usedColor)
+        {
+            if (blockColor == block.Color)
+            {
+                isDuplicate = true;
+            }
+            else
+            {
+                isDuplicate |= false;
+            }
+        }
+        if (!isDuplicate)
+        {
+            usedColor.Add(block.Color);
+        }
+        UserUI userUI = UIManager.Instance.CurrentMainUI as UserUI;
+        userUI.ChagneColorHistory(usedColor);
+    }
+
+    public void ChangeColor(Block block, Color color)
+    {
+        block.Color = color;
     }
     public void Remove(Block block)
     {
@@ -38,10 +65,11 @@ public class ModelManager : Singleton<ModelManager>
     }
     public void RemoveAll()
     {
-        foreach (Block block in blocks)
+        for (int i = 0; i < blocks.Count;)
         {
-            blocks.Remove(block);
-            ObjectManager.Instance.blockManager.DeSpawn(block);
+            Debug.Log(blocks[0].name);
+            ObjectManager.Instance.blockManager.DeSpawn(blocks[0]);
+            blocks.RemoveAt(0);
         }
     }
     public void BuildComplete()

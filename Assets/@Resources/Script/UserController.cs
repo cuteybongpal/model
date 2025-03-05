@@ -9,8 +9,6 @@ public class UserController : MonoBehaviour
 {
     public float maxXAngle;
     public float minXAngle;
-    //test ¿ëµµ
-    public Material Material;
     void Start()
     {
         PreviewAndPlaceBlock();
@@ -115,7 +113,7 @@ public class UserController : MonoBehaviour
 
 
             Block _block = ObjectManager.Instance.blockManager.Spawn();
-            _block.Material = Material;
+            _block.Material = UserManager.Instance.CurrentMaterial;
             _block.Color = UserManager.Instance.CurrentColor;
             _block.transform.position = hitPos;
             await UniTask.Yield();
