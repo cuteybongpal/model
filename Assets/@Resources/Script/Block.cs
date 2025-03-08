@@ -5,7 +5,7 @@ using UnityEngine;
 public class Block : MonoBehaviour
 {
     private Vector3Int pos;
-    private Color color;
+    public Color color;
     private Material material;
     public Vector3Int Pos {  get { return pos; } set { pos = value; } }
     public Color Color {

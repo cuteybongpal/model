@@ -9,11 +9,9 @@ public class UserController : MonoBehaviour
 {
     public float maxXAngle;
     public float minXAngle;
-    //test 용도
-    public Material Material;
     void Start()
     {
-        PreviewAndPlaceBlock();
+        HandleBlock();
     }
     //유니티 생명주기 함수
     private void Update()
@@ -80,9 +78,9 @@ public class UserController : MonoBehaviour
     }
 
     //블럭 설치와 미리보기 기능
-    private async void PreviewAndPlaceBlock()
+    private async void HandleBlock()
     {
-
+        //현재 앱이 실행중일 때만 루프를 건다.
         while (Application.isPlaying)
         {
             //마우스 커서가 UI요소에 있을 경우 컨티뉴함
@@ -102,10 +100,11 @@ public class UserController : MonoBehaviour
                 await UniTask.Yield();
                 continue;
             }
-
+            GameObject collisionGameObject = null;
             foreach (RaycastHit hit in hits)
             {
                 hitPos = hit.point - ray.direction * .001f;
+                collisionGameObject = hit.collider.gameObject;
                 break;
             }
 
@@ -114,23 +113,70 @@ public class UserController : MonoBehaviour
             hitPos.z = Mathf.Round(hitPos.z);
 
 
-            Block _block = ObjectManager.Instance.blockManager.Spawn();
-            _block.Material = Material;
-            _block.Color = UserManager.Instance.CurrentColor;
-            _block.transform.position = hitPos;
-            await UniTask.Yield();
-            if (Input.GetMouseButtonDown(0))
+            if (UserManager.Instance.UserMode == UserManager.UserState.PlaceMode)
             {
-                Color color = _block.Color;
-                color.a = 1f;
-                _block.Color = color;
-                Vector3Int blockPos = new Vector3Int((int)hitPos.x, (int)hitPos.y, (int)hitPos.z);
-                _block.Pos = blockPos;
-                ModelManager.Instance.Add(_block);
-                _block = null;
-                continue;
+                Block _block = ObjectManager.Instance.blockManager.Spawn();
+                _block.Material = UserManager.Instance.CurrentMaterial;
+                _block.Color = UserManager.Instance.CurrentColor;
+                _block.transform.position = hitPos;
+                await UniTask.Yield();
+                if (Input.GetMouseButtonDown(0))
+                {
+                    Color color = _block.Color;
+                    color.a = 1f;
+                    _block.Color = color;
+                    Vector3Int blockPos = new Vector3Int((int)hitPos.x, (int)hitPos.y, (int)hitPos.z);
+                    _block.Pos = blockPos;
+                    ModelManager.Instance.Add(_block);
+                    _block = null;
+                    continue;
+                }
+                ObjectManager.Instance.blockManager.DeSpawn(_block);
             }
-            ObjectManager.Instance.blockManager.DeSpawn(_block);
+            else if (UserManager.Instance.UserMode == UserManager.UserState.PaintMode)
+            {
+                if (collisionGameObject== null)
+                {
+                    await UniTask.Yield();
+                    continue;
+                }
+                Block block = collisionGameObject.GetComponent<Block>();
+                if (block == null)
+                {
+                    await UniTask.Yield();
+                    continue;
+                }
+                
+                Color color = block.Color;
+                block.Color = UserManager.Instance.CurrentColor;
+                await UniTask.Yield();
+                if (Input.GetMouseButtonDown(0))
+                {
+                    continue;
+                }
+                block.Color = color;
+            }
+            else
+            {
+                if (collisionGameObject == null)
+                {
+                    await UniTask.Yield();
+                    continue;
+                }
+                Block block = collisionGameObject.GetComponent<Block>();
+
+                if (block == null)
+                {
+                    await UniTask.Yield();
+                    continue;
+                }
+                await UniTask.Yield();
+                if (Input.GetMouseButtonDown(0))
+                {
+                    ModelManager.Instance.Remove(block);
+                    ObjectManager.Instance.blockManager.DeSpawn(block);
+                }
+            }
         }
     }
 }

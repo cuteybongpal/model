@@ -11,7 +11,7 @@ public class UserManager : Singleton<UserManager>
         RemoveMode,
         PaintMode
     }
-    public UserState UserMode = UserState.PlaceMode;
+    public UserState UserMode;
     public Material CurrentMaterial = null;
     public Color CurrentColor = Color.white;
 

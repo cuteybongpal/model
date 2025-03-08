@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Palmmedia.ReportGenerator.Core.Reporting.Builders;
@@ -47,25 +48,20 @@ public class SetColor : ICommand
         this.image = image;
     }
 }
-public class SetImageMaterial : ICommand
-{
-    public void Execute()
-    {
-        throw new System.NotImplementedException();
-    }
-}
 
 public class ChangeColor : ICommand
 {
-    Color color;
+    Func<Color> getColor;
+
     public void Execute()
     {
-        UserManager.Instance.CurrentColor = color;
+        Debug.Log(getColor());
+        UserManager.Instance.CurrentColor = getColor();
     }
 
-    public ChangeColor(ref Color color)
+    public ChangeColor(Func<Color> getColor)
     {
-        this.color = color;
+        this.getColor = getColor;
     }
 }
 public class Save : ICommand

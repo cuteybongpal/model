@@ -18,6 +18,8 @@ public class UI_ColorPicker : MonoBehaviour
         {
             selectedColor = value;
             UserManager.Instance.CurrentColor = selectedColor;
+            UserUI userUI = UIManager.Instance.CurrentMainUI as UserUI;
+            userUI.ChangeCurrentColor(SelectedColor);
         }
     }
     void Start()

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class UI_Base : MonoBehaviour
 {
+<<<<<<< HEAD
     // Start is called before the first frame update
     void Start()
     {
@@ -14,5 +15,10 @@ public class UI_Base : MonoBehaviour
     void Update()
     {
         
+=======
+    protected virtual void Start()
+    {
+        UIManager.Instance.CurrentMainUI = this;
+>>>>>>> origin/main
     }
 }
