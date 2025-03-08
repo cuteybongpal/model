@@ -152,6 +152,7 @@ public class UserController : MonoBehaviour
                 await UniTask.Yield();
                 if (Input.GetMouseButtonDown(0))
                 {
+                    ModelManager.Instance.ChangeColor(block, block.Color);
                     continue;
                 }
                 block.Color = color;

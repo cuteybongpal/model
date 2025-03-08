@@ -15,6 +15,8 @@ public class UI_ButtonController : MonoBehaviour
         //테스트용도로 집어넣은 것 
         Save,
         DelateAll,
+        Undo,
+        Redo,
         None
     }
     public OnClickEvent ClickEvent = OnClickEvent.None;

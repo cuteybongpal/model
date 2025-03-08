@@ -12,7 +12,7 @@ public class UserManager : Singleton<UserManager>
         PaintMode
     }
     public UserState UserMode;
-    public Material CurrentMaterial = null;
+    public Material CurrentMaterial;
     public Color CurrentColor = Color.white;
 
     private void Awake()
@@ -20,6 +20,8 @@ public class UserManager : Singleton<UserManager>
         if (instance == null)
         {
             instance = this;
+            ResourceManager resourceManager = new ResourceManager();
+            CurrentMaterial = resourceManager.Load<Material>("Material9.mat");
         }
         else
         {

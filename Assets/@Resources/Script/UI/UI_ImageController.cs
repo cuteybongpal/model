@@ -13,7 +13,10 @@ public class UI_ImageController : MonoBehaviour
     {
         Color,
         Texture,
-        CurrentColor
+        CurrentColor,
+        Undo,
+        Redo,
+        None
     }
     public int ColorNum;
 

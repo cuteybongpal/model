@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Linq;
 using Unity.VisualScripting;
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,6 +13,9 @@ public class UserUI : UI_Base
     public List<UI_ButtonController> Buttons;
     public Composite composite;
     ResourceManager resourceManager;
+
+    public Action<bool> CanUndo;
+    public Action<bool> CanRedo;
 
     Type[] types = 
     {
@@ -35,6 +39,10 @@ public class UserUI : UI_Base
         composite.Operation<UI_ButtonController>(new Action<UI_ButtonController>(AddButtonEvent));
 
         composite.Operation<UI_ImageController>(new Action<UI_ImageController>(SetMaterials));
+
+        CanUndo = new Action<bool>(SetUndoButtonState);
+        CanRedo = new Action<bool>(SetRedoButtonState);
+
     }
     void AddButtonEvent(UI_ButtonController _button)
     {
@@ -60,6 +68,12 @@ public class UserUI : UI_Base
                 break;
             case UI_ButtonController.OnClickEvent.ChangeColor:
                 command = new ChangeColor(() => (_button.gameObject.GetComponent<Image>().color));
+                break;
+            case UI_ButtonController.OnClickEvent.Undo:
+                command = new Undo();
+                break;
+            case UI_ButtonController.OnClickEvent.Redo:
+                command = new Redo();
                 break;
             default:
                 break;
@@ -98,10 +112,36 @@ public class UserUI : UI_Base
 
     public void SetMaterials(UI_ImageController imageController)
     {
-        if (imageController.type == UI_ImageController.ImageType.Color)
+        if (imageController.type != UI_ImageController.ImageType.Texture)
             return;
         imageController.ChangeImage(materials[imageController.ColorNum]);
     }
+
+    void SetUndoButtonState(bool isActive)
+    {
+        composite.Operation<UI_ImageController>(new Action<UI_ImageController>((ui_imageContgroller) =>{
+            if (ui_imageContgroller.type == UI_ImageController.ImageType.Undo)
+            {
+                Color color = Color.white;
+                if (!isActive)
+                    color = new Color(.5f, .5f, .5f);
+                ui_imageContgroller.ChangeColor(color);
+            }
+        }));
+    }
+    void SetRedoButtonState(bool isActive)
+    {
+        composite.Operation<UI_ImageController>(new Action<UI_ImageController>((ui_imageContgroller) => {
+            if (ui_imageContgroller.type == UI_ImageController.ImageType.Redo)
+            {
+                Color color = Color.white;
+                if (!isActive)
+                    color = new Color(.5f, .5f, .5f);
+                ui_imageContgroller.ChangeColor(color);
+            }
+        }));
+    }
+
 
     Composite findChild(Transform transform, Composite _composite)
     {
@@ -141,12 +181,8 @@ public class UserUI : UI_Base
                     if (component == null)
                         continue;
                     Type type = typeof(Leaf<>);
-                    Type genericType = type.MakeGenericType(component.GetType());
-<<<<<<< HEAD
+                   Type genericType = type.MakeGenericType(component.GetType());
                     object leaf = Activator.CreateInstance(genericType,new object[] {component});
-=======
-                    object leaf = Activator.CreateInstance(genericType, new object[] { component });
->>>>>>> origin/main
                     compos.Add(leaf as Element);
                 }
             }

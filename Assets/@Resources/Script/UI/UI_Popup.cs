@@ -6,6 +6,6 @@ public class UI_Popup : UI_Base
 {
     public void PopUpDown()
     {
-
+        UIManager.Instance.PopupDown();
     }
 }

@@ -7,7 +7,15 @@ public class Block : MonoBehaviour
     private Vector3Int pos;
     public Color color;
     private Material material;
-    public Vector3Int Pos {  get { return pos; } set { pos = value; } }
+    public Vector3Int Pos 
+    {
+        get { return pos; }
+        set 
+        {
+            pos = value;
+            transform.position = pos;
+        }
+    }
     public Color Color {
         get { return color; }
         set 

@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Palmmedia.ReportGenerator.Core.Reporting.Builders;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -76,5 +75,22 @@ public class DeleteAll : ICommand
     public void Execute()
     {
         ModelManager.Instance.RemoveAll();
+    }
+}
+
+public class Undo : ICommand
+{
+    public void Execute()
+    {
+        ModelManager.Instance.Undo();;
+    }
+}
+public class Redo : ICommand
+{
+    public UI_ImageController controller;
+
+    public void Execute()
+    {
+        ModelManager.Instance.Redo();
     }
 }

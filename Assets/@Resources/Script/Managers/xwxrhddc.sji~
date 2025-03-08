@@ -19,16 +19,17 @@ public class ModelManager : Singleton<ModelManager>
     List<Color> usedColor = new List<Color>() { Color.white };
     public Stack<List<BlockData>> WorkStack = new Stack<List<BlockData>>();
     public Stack<List<BlockData>> UndoStack = new Stack<List<BlockData>>();
+
     bool canUndo = false;
     bool canRedo = false;
+
     public bool CanUndo 
     { 
         get { return canUndo; }
         set
         {
             canUndo = value;
-            UserUI userUI = UIManager.Instance.CurrentMainUI as UserUI;
-            userUI?.CanUndo?.Invoke(canUndo);
+
         }
     }
 
@@ -38,8 +39,7 @@ public class ModelManager : Singleton<ModelManager>
         set
         {
             canRedo = value;
-            UserUI userUI = UIManager.Instance.CurrentMainUI as UserUI;
-            userUI?.CanRedo?.Invoke(canRedo);
+
         }
     }
     //싱글톤 코드
@@ -53,12 +53,6 @@ public class ModelManager : Singleton<ModelManager>
         {
             Destroy(this);
         }
-    }
-
-    private void Start()
-    {
-        CanRedo = false;
-        CanUndo = false;
     }
     //blocks 리스트에 블럭 추가
     public void Add(Block block)
@@ -135,11 +129,12 @@ public class ModelManager : Singleton<ModelManager>
             ObjectManager.Instance.blockManager.DeSpawn(block);
         }
         blocks.Clear();
-        CanRedo = true;
+
         if (WorkStack.Count == 0)
         {
             CanUndo = false;
             return;
+
         }
         foreach (BlockData data in WorkStack.Peek())
         {
@@ -170,11 +165,6 @@ public class ModelManager : Singleton<ModelManager>
             blocks.Add(block);
         }
         popedWork = null;
-
-        if (UndoStack.Count == 0)
-        {
-            CanRedo = false;
-        }
     }
     
     //WorkStack에 했던 걸 추가 해줌
@@ -195,8 +185,7 @@ public class ModelManager : Singleton<ModelManager>
             blockDataList.Add(data);
         }
         WorkStack.Push(blockDataList);
-        CanRedo = false;
-        CanUndo = true;
+        
     }
 }
 public struct BlockData
