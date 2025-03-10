@@ -14,6 +14,7 @@ public class Loader : MonoBehaviour
         {
             resourceManager.LoadAllAsync<Material>("Material", () =>
             {
+                UserManager.Instance.Init();
                 SceneManager.LoadScene(1);
             });
         });

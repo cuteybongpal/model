@@ -14,18 +14,22 @@ public class UserManager : Singleton<UserManager>
     public UserState UserMode;
     public Material CurrentMaterial;
     public Color CurrentColor = Color.white;
+    ResourceManager resourceManager;
 
     private void Awake()
     {
         if (instance == null)
         {
             instance = this;
-            ResourceManager resourceManager = new ResourceManager();
-            CurrentMaterial = resourceManager.Load<Material>("Material9.mat");
+            resourceManager = new ResourceManager();
         }
         else
         {
             Destroy(instance);
         }
+    }
+    public void Init()
+    {
+        CurrentMaterial = resourceManager.Load<Material>("Material9.mat");
     }
 }
