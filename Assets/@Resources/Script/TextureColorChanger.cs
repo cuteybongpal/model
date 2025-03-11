@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class TextureColorChanger
 {
-    public void ChangeTextureColor(Material texture, Color color)
+    public byte[] ChangeTextureColor(Material texture, Color color)
     {
         Texture2D t = texture.mainTexture as Texture2D;
         Texture2D tex = new Texture2D(t.width, t.height);
@@ -28,6 +28,7 @@ public class TextureColorChanger
             }
         }
         tex.Apply();
-        File.WriteAllBytes($"Assets/@Resources/Output/{texture.mainTexture.name}_{color.r}_{color.g}_{color.b}.png", tex.EncodeToPNG());
+        byte[] binaryImage = tex.GetRawTextureData();
+        return binaryImage;
     }
 }

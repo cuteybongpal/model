@@ -21,6 +21,8 @@ public class ModelManager : Singleton<ModelManager>
     public Stack<List<BlockData>> UndoStack = new Stack<List<BlockData>>();
     bool canUndo = false;
     bool canRedo = false;
+
+    WebGLBridge WebGLBridge = null;
     public bool CanUndo 
     { 
         get { return canUndo; }
@@ -113,9 +115,26 @@ public class ModelManager : Singleton<ModelManager>
     //만들 었던 것을 저장시킴
     public void BuildComplete()
     {
-        dataManager.Export2obj(blocks);
-        dataManager.Export2bd(blocks);
-        dataManager.Export2mtl(blocks);
+        string objContent = dataManager.Export2obj(blocks);
+        string bdContent = dataManager.Export2bd(blocks);
+        string mtlContent = dataManager.Export2mtl(blocks);
+        List<DataManager.AssetImage> Images = dataManager.GetImages(blocks);
+        List<byte[]> images = new List<byte[]>();
+        List<string> fileNames = new List<string>();
+
+        foreach(DataManager.AssetImage image in Images)
+        {
+            images.Add(image.Image);
+            fileNames.Add(image.Name);
+        }
+
+        WebGLBridge = new WebGLBridge();
+
+        WebGLBridge.SendMtlFileToJs(mtlContent);
+        WebGLBridge.SendBdFileToJs(bdContent);
+        WebGLBridge.SendObjFileToJS(objContent);
+
+        WebGLBridge.SendImagesToJs(images, fileNames);
     }
     //bd파일을 로드함
     

@@ -36,7 +36,7 @@ public class DataManager
     }
 
 
-    public void Export2obj(List<Block> blocks)
+    public string Export2obj(List<Block> blocks)
     {
         string objContent = "" + ExportFormat.UseMtl;
 
@@ -62,10 +62,9 @@ public class DataManager
             string mtlName = String.Format(ExportFormat.MtlName, blocks[j].Color.r, blocks[j].Color.g, blocks[j].Color.b, blocks[j].Material.name);
             objContent += String.Format(ExportFormat.ObjFormat, vertex, face, mtlName);
         }
-        File.WriteAllText("Assets/@Resources/Output/output.obj", objContent);
-        Debug.Log("¼º°ø");
+        return objContent;
     }
-    public void Export2bd(List<Block> blocks)
+    public string Export2bd(List<Block> blocks)
     {
         string bdContent = "";
         for (int i = 0; i < blocks.Count; i++)
@@ -73,9 +72,9 @@ public class DataManager
             Block block = blocks[i];
             bdContent += String.Format(ExportFormat.BdFormat, block.Pos.x, block.Pos.y, block.Pos.z, block.Material.name, Mathf.RoundToInt(block.Color.r * 255), Mathf.RoundToInt(block.Color.g * 255), Mathf.RoundToInt(block.Color.b * 255));
         }
-        File.WriteAllText("Assets/@Resources/Output/output.bd", bdContent);
+        return bdContent;
     }
-    public void Export2mtl(List<Block> blocks)
+    public string Export2mtl(List<Block> blocks)
     {
         List<Mtl> materials = new List<Mtl>();
         foreach (Block block in blocks)
@@ -106,21 +105,60 @@ public class DataManager
 
         foreach (Mtl mtl in materials)
         {
-            colorChanger.ChangeTextureColor(mtl.Material, mtl.Color);
-        }
-
-
-        foreach (Mtl mtl in materials)
-        {
             string mtlName = String.Format(ExportFormat.MtlName, mtl.Color.r, mtl.Color.g, mtl.Color.b, mtl.Material.name);
             mtlContent += String.Format(ExportFormat.MtlFormat, mtlName, $"{mtl.Material.mainTexture.name}_{mtl.Color.r}_{mtl.Color.g}_{mtl.Color.b}", mtl.Color.r, mtl.Color.g, mtl.Color.b);
         }
-        Debug.Log(mtlContent);
-        File.WriteAllText("Assets/@Resources/Output/output.mtl", mtlContent);
+        return mtlContent;
+    }
+
+    public List<AssetImage> GetImages(List<Block> blocks)
+    {
+        List<Mtl> materials = new List<Mtl>();
+        foreach (Block block in blocks)
+        {
+            Mtl mtl = new Mtl();
+            mtl.Material = block.Material;
+            mtl.Color = block.Color;
+            bool isNotOverlap = true;
+            foreach (Mtl mat in materials)
+            {
+                if (mat.Material == mtl.Material && mat.Color == mtl.Color)
+                {
+                    isNotOverlap = false;
+                    break;
+                }
+                else
+                {
+                    isNotOverlap &= true;
+                }
+            }
+
+            if (isNotOverlap)
+            {
+                materials.Add(mtl);
+            }
+        }
+        List<AssetImage> images = new List<AssetImage>();
+        foreach (Mtl mtl in materials)
+        {
+            images.Add(new AssetImage(colorChanger.ChangeTextureColor(mtl.Material, mtl.Color), $"{mtl.Material.mainTexture.name}_{mtl.Color.r}_{mtl.Color.g}_{mtl.Color.b}"));
+        }
+        return images;
     }
     struct Mtl
     {
         public Material Material;
         public Color Color;
+    }
+    public struct AssetImage
+    {
+        public byte[] Image;
+        public string Name;
+
+        public AssetImage(byte[] bytes, string Name)
+        {
+            this.Image = bytes;
+            this.Name = Name;
+        }
     }
 }
