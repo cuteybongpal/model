@@ -119,13 +119,18 @@ public class ModelManager : Singleton<ModelManager>
         string bdContent = dataManager.Export2bd(blocks);
         string mtlContent = dataManager.Export2mtl(blocks);
         List<DataManager.AssetImage> Images = dataManager.GetImages(blocks);
-        List<byte[]> images = new List<byte[]>();
-        List<string> fileNames = new List<string>();
+        string[] images = new string[Images.Count];
+        string[] fileNames = new string[Images.Count];
 
+        int i = 0;
         foreach(DataManager.AssetImage image in Images)
         {
-            images.Add(image.Image);
-            fileNames.Add(image.Name);
+
+            images[i] = image.Image;
+            fileNames[i] = image.Name;
+            Debug.Log(images[i]);
+            Debug.Log(fileNames[i]);
+            i++;
         }
 
         WebGLBridge = new WebGLBridge();

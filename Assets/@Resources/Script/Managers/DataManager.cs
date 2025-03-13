@@ -152,12 +152,12 @@ public class DataManager
     }
     public struct AssetImage
     {
-        public byte[] Image;
+        public string Image;
         public string Name;
 
         public AssetImage(byte[] bytes, string Name)
         {
-            this.Image = bytes;
+            this.Image = Convert.ToBase64String(bytes);
             this.Name = Name;
         }
     }
