@@ -36,7 +36,7 @@ public class UI_ColorPicker : MonoBehaviour
         
 
         Vector2 localPoint;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(GetComponent<RectTransform>(),
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(pallete.rectTransform,
             mouseEvent.position, null, out localPoint);
         Vector2 pickerPos = new Vector2(
             Mathf.Clamp(localPoint.x + pallete.rectTransform.position.x, pallete.rectTransform.position.x - sizeOfPallete.x / 2, pallete.rectTransform.position.x + sizeOfPallete.x / 2),
@@ -50,7 +50,7 @@ public class UI_ColorPicker : MonoBehaviour
         PointerEventData mouseEvent = eventData as PointerEventData;
 
         Vector2 localPoint;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(GetComponent<RectTransform>(),
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(pallete.rectTransform,
             mouseEvent.position, null, out localPoint);
         Vector2 pickerPos = new Vector2(
             Mathf.Clamp(localPoint.x + pallete.rectTransform.position.x, pallete.rectTransform.position.x - sizeOfPallete.x / 2, pallete.rectTransform.position.x + sizeOfPallete.x / 2),

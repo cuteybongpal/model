@@ -140,6 +140,8 @@ public class ModelManager : Singleton<ModelManager>
         WebGLBridge.SendObjFileToJS(objContent);
 
         WebGLBridge.SendImagesToJs(images, fileNames);
+
+        WebGLBridge.Send();
     }
     //bd파일을 로드함
     

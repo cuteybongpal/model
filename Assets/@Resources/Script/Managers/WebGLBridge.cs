@@ -9,6 +9,8 @@ public class WebGLBridge
 
     [DllImport("__Internal")]
     private static extern void SendImagesToJS(string Base64ImagesJson, string fileNamesJson);
+    [DllImport("__Internal")]
+    private static extern void Submit();
 
     public void SendObjFileToJS(string objFile)
     {
@@ -33,6 +35,10 @@ public class WebGLBridge
         string fileNamesJson = JsonUtility.ToJson(fileNameWrapper);
 
         SendImagesToJS(imagesJson, fileNamesJson);
+    }
+    public void Send()
+    {
+        Submit();
     }
     private class Wrapper
     {

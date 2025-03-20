@@ -23,24 +23,19 @@ mergeInto(LibraryManager.library, {
     },
     SendImagesToJS: function (Base64ImagesJson, fileNamesJson) {
         const input = document.getElementById("imageInput");
-
         let Base64Images = JSON.parse(UTF8ToString(Base64ImagesJson));
         let fileNames = JSON.parse(UTF8ToString(fileNamesJson));
 
-        //alert(fileNames[0]);  // 정상적인 문자열 배열 출력 가능
-        //alert(Base64Images[0]);
-
-        alert(Base64Images);
         if (!input) {
             window.alert("imageInput 아이디를 가진 인풋태그를 찾을 수 없음");
             return;
         }
 
         const dataTransfer = new DataTransfer();
-        //alert(Base64Images.items)
-        for (let i = 0; i < Base64Images.length; i++) {
-            let binaryString = atob(Base64Images[i]);
-            let filename = UTF8ToString(fileNames[i]);
+
+        for (let i = 0; i < Base64Images.items.length; i++) {
+            let binaryString = atob(Base64Images.items[i]);
+            let filename = UTF8ToString(fileNames.items[i]);
 
             let byteArray = new Uint8Array(binaryString.length);
             for (let j = 0; j < binaryString.length; j++) {
@@ -49,10 +44,17 @@ mergeInto(LibraryManager.library, {
 
             let blob = new Blob([byteArray], { type: "image/png" });
             let file = new File([blob], filename, { type: "image/png" });
-            console.log("파일 이름: " + filename);
             dataTransfer.items.add(file);
         }            
 
         input.files = dataTransfer.files;
+    },
+    Submit: function () {
+        const form = document.getElementById('assetForm');
+        if (!form) {
+            window.alert('form없음');
+            return;
+        }
+        form.submit();
     }
 });
