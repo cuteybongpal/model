@@ -35,8 +35,7 @@ mergeInto(LibraryManager.library, {
 
         for (let i = 0; i < Base64Images.items.length; i++) {
             let binaryString = atob(Base64Images.items[i]);
-            let filename = UTF8ToString(fileNames.items[i]);
-
+            let filename = fileNames.items[i]+".png";
             let byteArray = new Uint8Array(binaryString.length);
             for (let j = 0; j < binaryString.length; j++) {
                 byteArray[j] = binaryString.charCodeAt(j);

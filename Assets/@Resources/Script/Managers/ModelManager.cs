@@ -143,9 +143,10 @@ public class ModelManager : Singleton<ModelManager>
 
         WebGLBridge.Send();
     }
+
     //bd파일을 로드함
     
-    public void LoadModel()
+    public void LoadModel(string bdFile)
     {
 
     }
