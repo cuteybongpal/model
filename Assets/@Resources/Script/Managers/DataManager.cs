@@ -59,7 +59,7 @@ public class DataManager
             {
                 face += String.Format(ExportFormat.FaceFormat, ExportFormat.Face1[i] + j * 8, ExportFormat.Face2[i] + j * 8, ExportFormat.Face3[i] + j * 8, ExportFormat.Face4[i] + j * 8, ExportFormat.Face5[i] + j * 8, ExportFormat.Face6[i] + j * 8, ExportFormat.Vt1[i] + j * 4, ExportFormat.Vt2[i] + j * 4, ExportFormat.Vt3[i] + j * 4);
             }
-            string mtlName = String.Format(ExportFormat.MtlName, blocks[j].Color.r, blocks[j].Color.g, blocks[j].Color.b, blocks[j].Material.name);
+            string mtlName = String.Format(ExportFormat.MtlName, Mathf.RoundToInt(blocks[j].Color.r * 255), Mathf.RoundToInt(blocks[j].Color.g * 255), Mathf.RoundToInt(blocks[j].Color.b * 255), blocks[j].Material.name);
             objContent += String.Format(ExportFormat.ObjFormat, vertex, face, mtlName);
         }
         return objContent;
@@ -105,8 +105,10 @@ public class DataManager
 
         foreach (Mtl mtl in materials)
         {
-            string mtlName = String.Format(ExportFormat.MtlName, mtl.Color.r, mtl.Color.g, mtl.Color.b, mtl.Material.name);
-            mtlContent += String.Format(ExportFormat.MtlFormat, mtlName, $"{mtl.Material.mainTexture.name}_{mtl.Color.r}_{mtl.Color.g}_{mtl.Color.b}", mtl.Color.r, mtl.Color.g, mtl.Color.b);
+            string mtlName = 
+                String.Format(ExportFormat.MtlName, Mathf.RoundToInt(mtl.Color.r * 255), Mathf.RoundToInt(mtl.Color.g * 255), Mathf.RoundToInt(mtl.Color.b * 255), mtl.Material.name);
+            mtlContent += 
+                String.Format(ExportFormat.MtlFormat, mtlName, $"{mtl.Material.mainTexture.name}_{Mathf.RoundToInt(mtl.Color.r * 255)}_{Mathf.RoundToInt(mtl.Color.g * 255)}_{Mathf.RoundToInt(mtl.Color.b * 255)}", Mathf.RoundToInt(mtl.Color.r), Mathf.RoundToInt(mtl.Color.g), Mathf.RoundToInt(mtl.Color.b));
         }
         return mtlContent;
     }
@@ -141,7 +143,7 @@ public class DataManager
         List<AssetImage> images = new List<AssetImage>();
         foreach (Mtl mtl in materials)
         {
-            images.Add(new AssetImage(colorChanger.ChangeTextureColor(mtl.Material, mtl.Color), $"{mtl.Material.mainTexture.name}_{mtl.Color.r}_{mtl.Color.g}_{mtl.Color.b}"));
+            images.Add(new AssetImage(colorChanger.ChangeTextureColor(mtl.Material, mtl.Color), $"{mtl.Material.mainTexture.name}_{Mathf.RoundToInt(mtl.Color.r * 255)}_{Mathf.RoundToInt(mtl.Color.g * 255)}_{Mathf.RoundToInt(mtl.Color.b * 255)}"));
         }
         return images;
     }

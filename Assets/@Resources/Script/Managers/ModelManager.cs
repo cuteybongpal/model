@@ -128,11 +128,8 @@ public class ModelManager : Singleton<ModelManager>
 
             images[i] = image.Image;
             fileNames[i] = image.Name;
-            Debug.Log(images[i]);
-            Debug.Log(fileNames[i]);
             i++;
         }
-
         WebGLBridge = new WebGLBridge();
 
         WebGLBridge.SendMtlFileToJs(mtlContent);
