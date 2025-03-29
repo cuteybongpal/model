@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.Rendering;
 
-public class TextureColorChanger
+public class TextureHelper
 {
     public byte[] ChangeTextureColor(Material texture, Color color)
     {
@@ -30,5 +31,14 @@ public class TextureColorChanger
         tex.Apply();
         byte[] binaryImage = tex.EncodeToPNG();
         return binaryImage;
+    }
+    public byte[] RenderTextureToByteArray(RenderTexture renderTexture)
+    {
+        Texture2D texture2D = new Texture2D(renderTexture.width, renderTexture.height, TextureFormat.RGB24, false);
+
+
+
+        texture2D.ReadPixels(new Rect(0,0, renderTexture.width, renderTexture.height), 0,0);
+        return null;
     }
 }

@@ -130,15 +130,20 @@ public class ModelManager : Singleton<ModelManager>
             fileNames[i] = image.Name;
             i++;
         }
-        WebGLBridge = new WebGLBridge();
+        ResourceManager resourceManager = new ResourceManager();
+        //현재 todo : 썸네일 만들기 완료 버튼을 누를 당시의 화면을 썸네일로 만들것임
 
-        WebGLBridge.SendMtlFileToJs(mtlContent);
-        WebGLBridge.SendBdFileToJs(bdContent);
-        WebGLBridge.SendObjFileToJS(objContent);
+        RenderTexture renderTexture = resourceManager.Load<RenderTexture>("Thumbnail");
+        
+        //WebGLBridge = new WebGLBridge();
 
-        WebGLBridge.SendImagesToJs(images, fileNames);
+        //WebGLBridge.SendMtlFileToJs(mtlContent);
+        //WebGLBridge.SendBdFileToJs(bdContent);
+        //WebGLBridge.SendObjFileToJS(objContent);
 
-        WebGLBridge.Send();
+        //WebGLBridge.SendImagesToJs(images, fileNames);
+
+        //WebGLBridge.Send();
     }
 
     //bd파일을 로드함

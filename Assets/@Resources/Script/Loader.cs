@@ -14,8 +14,11 @@ public class Loader : MonoBehaviour
         {
             resourceManager.LoadAllAsync<Material>("Material", () =>
             {
-                UserManager.Instance.Init();
-                SceneManager.LoadScene(1);
+                resourceManager.LoadAllAsync<RenderTexture>("RenderTexture", () =>
+                {
+                    UserManager.Instance.Init();
+                    SceneManager.LoadScene(1);
+                });
             });
         });
 

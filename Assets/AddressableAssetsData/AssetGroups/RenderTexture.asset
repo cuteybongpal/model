@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: RenderTexture
+  m_EditorClassIdentifier: 
+  m_GroupName: RenderTexture
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 1c593ccea25109c41b157cc37daf471e
+  m_SerializeEntries:
+  - m_GUID: bf1ade1d097c1d64cb24bd8282f2b7bf
+    m_Address: Thumbnail
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - RenderTexture
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 80636f785515ed945b6deba97fa673fe, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 2639e6d9702ea8e42953ec62dcb0cdb2, type: 2}
+    - {fileID: 11400000, guid: 49716a558518c104f8676447dd65f6f6, type: 2}

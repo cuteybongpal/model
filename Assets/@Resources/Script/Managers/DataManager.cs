@@ -9,7 +9,7 @@ using UnityEngine.AI;
 //데이터를 불러오고 데이터를 저장하는 역할을 한다.
 public class DataManager
 {
-    TextureColorChanger colorChanger = new TextureColorChanger();
+    TextureHelper colorChanger = new TextureHelper();
     public enum DataExtention {
         xml,
         bd,
