@@ -28,7 +28,7 @@ public class TextureColorChanger
             }
         }
         tex.Apply();
-        byte[] binaryImage = tex.GetRawTextureData();
+        byte[] binaryImage = tex.EncodeToPNG();
         return binaryImage;
     }
 }

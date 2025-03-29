@@ -36,17 +36,18 @@ mergeInto(LibraryManager.library, {
         for (let i = 0; i < Base64Images.items.length; i++) {
             let binaryString = atob(Base64Images.items[i]);
             let filename = fileNames.items[i]+".png";
-            let byteArray = new Uint8Array(binaryString.length);
+            var byteArray = new Uint8Array(binaryString.length);
+
             for (let j = 0; j < binaryString.length; j++) {
-                byteArray[j] = binaryString.charCodeAt(j);
+                byteArray[j] = binaryString.charCodeAt(j);  // 바이너리 문자열의 각 문자를 숫자 코드로 변환하여 배열에 저장
             }
 
             let blob = new Blob([byteArray], { type: "image/png" });
             let file = new File([blob], filename, { type: "image/png" });
             dataTransfer.items.add(file);
-        }            
-
+        }
         input.files = dataTransfer.files;
+        
     },
     Submit: function () {
         const form = document.getElementById('assetForm');
