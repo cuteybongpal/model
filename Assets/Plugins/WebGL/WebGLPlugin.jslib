@@ -49,6 +49,30 @@ mergeInto(LibraryManager.library, {
         input.files = dataTransfer.files;
         
     },
+    SendThumbnailToJS: function(base64Data) {
+    const input = document.getElementById("thumbnailInput");
+    if (!input) {
+        window.alert("thumbnailInput 아이디를 가진 인풋태그를 찾을 수 없음");
+        return;
+    }
+
+    // 💡 base64Data는 C#에서 넘긴 UTF8 인코딩된 base64 문자열의 포인터라고 가정
+    let stringData = UTF8ToString(base64Data); // ✅ 올바른 사용
+    // ✅ base64 디코딩
+    let binaryStr = atob(stringData); // 'data' → 'binaryStr'로 이름 바꿔서 더 명확하게
+    let byteArray = new Uint8Array(binaryStr.length);
+    for (let i = 0; i < binaryStr.length; i++) {
+        byteArray[i] = binaryStr.charCodeAt(i); // ✅ 문자를 byte로 변환
+    }
+
+    // ✅ Blob → File → DataTransfer → input.files 설정
+    let dataTransfer = new DataTransfer();
+    let blob = new Blob([byteArray], { type: "image/png" }); // ⛏️ 'byteArray'를 사용해야 함
+    let file = new File([blob], "thumbnail.png", { type: "image/png" });
+    dataTransfer.items.add(file);
+
+    input.files = dataTransfer.files;
+},
     Submit: function () {
         const form = document.getElementById('assetForm');
         if (!form) {

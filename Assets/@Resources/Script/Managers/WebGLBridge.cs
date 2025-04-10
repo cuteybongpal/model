@@ -1,7 +1,8 @@
+using System;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
-public class WebGLBridge
+public static class WebGLBridge
 {
 
     [DllImport("__Internal")]
@@ -11,20 +12,22 @@ public class WebGLBridge
     private static extern void SendImagesToJS(string Base64ImagesJson, string fileNamesJson);
     [DllImport("__Internal")]
     private static extern void Submit();
+    [DllImport("__Internal")]
+    private static extern void SendThumbnailToJS(string thumbnail);
 
-    public void SendObjFileToJS(string objFile)
+    public static void SendObjFileToJS(string objFile)
     {
         ExecuteMethodToJS("FillInputObj", objFile);
     }
-    public void SendMtlFileToJs(string mtlFile)
+    public static void SendMtlFileToJs(string mtlFile)
     {
         ExecuteMethodToJS("FillInputMtl", mtlFile);
     }
-    public void SendBdFileToJs(string bdFile)
+    public static void SendBdFileToJs(string bdFile)
     {
         ExecuteMethodToJS("FillInputBd", bdFile);
     }
-    public void SendImagesToJs(string[] Base64Images, string[] fileNames)
+    public static void SendImagesToJs(string[] Base64Images, string[] fileNames)
     {
         Wrapper base64Wrapper = new Wrapper();
         Wrapper fileNameWrapper = new Wrapper();
@@ -36,7 +39,12 @@ public class WebGLBridge
 
         SendImagesToJS(imagesJson, fileNamesJson);
     }
-    public void Send()
+    public static void SendThumbnailToJs(byte[] thumbnail)
+    {
+        string base64Image = Convert.ToBase64String(thumbnail);
+        SendThumbnailToJS(base64Image);
+    }
+    public static void Send()
     {
         Submit();
     }

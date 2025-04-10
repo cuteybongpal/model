@@ -23,7 +23,6 @@ public class ModelManager : Singleton<ModelManager>
     bool canUndo = false;
     bool canRedo = false;
 
-    WebGLBridge WebGLBridge = null;
     public bool CanUndo 
     { 
         get { return canUndo; }
@@ -114,7 +113,7 @@ public class ModelManager : Singleton<ModelManager>
         Push(blocks);
     }
     //만들 었던 것을 저장시킴
-    public void BuildComplete()
+    public async void BuildComplete()
     {
         string objContent = dataManager.Export2obj(blocks);
         string bdContent = dataManager.Export2bd(blocks);
@@ -132,15 +131,15 @@ public class ModelManager : Singleton<ModelManager>
         }
         ResourceManager resourceManager = new ResourceManager();
         //현재 todo : 썸네일 만들기 완료 버튼을 누를 당시의 화면을 썸네일로 만들것임
-
         RenderTexture renderTexture = resourceManager.Load<RenderTexture>("Thumbnail");
+        TextureHelper helper = new TextureHelper();
         
-        //WebGLBridge = new WebGLBridge();
-
+        byte[] thumbnail = helper.RenderTextureToByteArray(renderTexture);
+        File.WriteAllBytes("thumbnail.png", thumbnail);
         //WebGLBridge.SendMtlFileToJs(mtlContent);
         //WebGLBridge.SendBdFileToJs(bdContent);
         //WebGLBridge.SendObjFileToJS(objContent);
-
+        //WebGLBridge.SendThumbnailToJs(thumbnail);
         //WebGLBridge.SendImagesToJs(images, fileNames);
 
         //WebGLBridge.Send();

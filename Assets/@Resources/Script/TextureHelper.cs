@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -34,11 +36,22 @@ public class TextureHelper
     }
     public byte[] RenderTextureToByteArray(RenderTexture renderTexture)
     {
-        Texture2D texture2D = new Texture2D(renderTexture.width, renderTexture.height, TextureFormat.RGB24, false);
+        RenderTexture currentRT = RenderTexture.active;
+        // 렌더 텍스처를 활성화
+        RenderTexture.active = renderTexture;
+        
+        // 텍스처 생성 및 복사
+        Texture2D texture = new Texture2D(renderTexture.width, renderTexture.height, TextureFormat.RGB24, false);
+        texture.ReadPixels(new Rect(0, 0, renderTexture.width, renderTexture.height), 0, 0);
+        texture.Apply();
 
+        // 원래대로 복구
+        RenderTexture.active = currentRT;
 
+        texture.Apply();
+        byte[] binaryImage = texture.EncodeToPNG();
 
-        texture2D.ReadPixels(new Rect(0,0, renderTexture.width, renderTexture.height), 0,0);
-        return null;
+        Object.Destroy(texture);
+        return binaryImage;
     }
 }
