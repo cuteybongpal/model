@@ -124,7 +124,6 @@ public class ModelManager : Singleton<ModelManager>
         int i = 0;
         foreach(DataManager.AssetImage image in Images)
         {
-
             images[i] = image.Image;
             fileNames[i] = image.Name;
             i++;
@@ -132,17 +131,13 @@ public class ModelManager : Singleton<ModelManager>
         ResourceManager resourceManager = new ResourceManager();
         //현재 todo : 썸네일 만들기 완료 버튼을 누를 당시의 화면을 썸네일로 만들것임
         RenderTexture renderTexture = resourceManager.Load<RenderTexture>("Thumbnail");
-        TextureHelper helper = new TextureHelper();
         
-        byte[] thumbnail = helper.RenderTextureToByteArray(renderTexture);
-        File.WriteAllBytes("thumbnail.png", thumbnail);
-        //WebGLBridge.SendMtlFileToJs(mtlContent);
-        //WebGLBridge.SendBdFileToJs(bdContent);
-        //WebGLBridge.SendObjFileToJS(objContent);
-        //WebGLBridge.SendThumbnailToJs(thumbnail);
-        //WebGLBridge.SendImagesToJs(images, fileNames);
+        WebGLBridge.SendMtlFileToJs(mtlContent);
+        WebGLBridge.SendBdFileToJs(bdContent);
+        WebGLBridge.SendObjFileToJS(objContent);
+        WebGLBridge.SendImagesToJs(images, fileNames);
 
-        //WebGLBridge.Send();
+        WebGLBridge.Send();
     }
 
     //bd파일을 로드함

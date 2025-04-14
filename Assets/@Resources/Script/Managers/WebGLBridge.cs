@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
@@ -12,8 +13,6 @@ public static class WebGLBridge
     private static extern void SendImagesToJS(string Base64ImagesJson, string fileNamesJson);
     [DllImport("__Internal")]
     private static extern void Submit();
-    [DllImport("__Internal")]
-    private static extern void SendThumbnailToJS(string thumbnail);
 
     public static void SendObjFileToJS(string objFile)
     {
@@ -38,11 +37,6 @@ public static class WebGLBridge
         string fileNamesJson = JsonUtility.ToJson(fileNameWrapper);
 
         SendImagesToJS(imagesJson, fileNamesJson);
-    }
-    public static void SendThumbnailToJs(byte[] thumbnail)
-    {
-        string base64Image = Convert.ToBase64String(thumbnail);
-        SendThumbnailToJS(base64Image);
     }
     public static void Send()
     {

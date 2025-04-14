@@ -34,24 +34,23 @@ public class TextureHelper
         byte[] binaryImage = tex.EncodeToPNG();
         return binaryImage;
     }
-    public byte[] RenderTextureToByteArray(RenderTexture renderTexture)
-    {
-        RenderTexture currentRT = RenderTexture.active;
-        // 렌더 텍스처를 활성화
-        RenderTexture.active = renderTexture;
+    //public byte[] RenderTextureToByteArray(RenderTexture renderTexture)
+    //{
+    //    RenderTexture currentRT = RenderTexture.active;
+    //    // 렌더 텍스처를 활성화
+    //    RenderTexture.active = renderTexture;
         
-        // 텍스처 생성 및 복사
-        Texture2D texture = new Texture2D(renderTexture.width, renderTexture.height, TextureFormat.RGB24, false);
-        texture.ReadPixels(new Rect(0, 0, renderTexture.width, renderTexture.height), 0, 0);
-        texture.Apply();
+    //    // 텍스처 생성 및 복사
+    //    Texture2D texture = new Texture2D(renderTexture.width, renderTexture.height, TextureFormat.RGB24, false);
+    //    texture.ReadPixels(new Rect(0, 0, renderTexture.width, renderTexture.height), 0, 0);
+    //    texture.Apply();
 
-        // 원래대로 복구
-        RenderTexture.active = currentRT;
+    //    // 원래대로 복구
+    //    RenderTexture.active = currentRT;
 
-        texture.Apply();
-        byte[] binaryImage = texture.EncodeToPNG();
-
-        Object.Destroy(texture);
-        return binaryImage;
-    }
+    //    byte[] binaryImage = texture.EncodeToPNG();
+    //    //File.WriteAllBytes("thumbnail1.png", binaryImage);
+    //    Object.Destroy(texture);
+    //    return binaryImage;
+    //}
 }

@@ -160,6 +160,7 @@ public class DataManager
         public AssetImage(byte[] bytes, string Name)
         {
             this.Image = Convert.ToBase64String(bytes);
+            File.WriteAllText("block.txt", Image);
             this.Name = Name;
         }
     }
