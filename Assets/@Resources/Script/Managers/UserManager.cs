@@ -11,6 +11,13 @@ public class UserManager : Singleton<UserManager>
         RemoveMode,
         PaintMode
     }
+    public enum UserAuthority
+    {
+        Create,
+        Specte,
+        None,
+    }
+    public UserAuthority Authority = UserAuthority.None;
     public UserState UserMode;
     public Material CurrentMaterial;
     public Color CurrentColor = Color.white;
@@ -31,5 +38,11 @@ public class UserManager : Singleton<UserManager>
     public void Init()
     {
         CurrentMaterial = resourceManager.Load<Material>("Material9.mat");
+    }
+
+    public void SetUserAuthority(string value)
+    {
+        Debug.Log(value);
+        Enum.TryParse<UserAuthority>(value, out Authority);
     }
 }

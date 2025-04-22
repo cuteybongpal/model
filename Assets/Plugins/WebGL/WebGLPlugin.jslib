@@ -55,5 +55,39 @@ mergeInto(LibraryManager.library, {
             return;
         }
         form.submit();
+    },
+    RegisterFocusEventListener: function () {
+        document.addEventListener('focusin', function (e) {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+                // 입력 요소에 포커스가 가면 Unity로 메시지 전달
+                SendMessage('User', 'OnInputFocusChanged', 'true');
+            }
+        });
+
+        document.addEventListener('focusout', function (e) {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+                // 입력 요소에서 포커스가 벗어나면 Unity로 메시지 전달
+                SendMessage('User', 'OnInputFocusChanged', 'false');
+            }
+        });
+    },
+    getUserAuthority: function (){
+        const userAuthority = document.getElementById('userAuthority');
+        if (!userAuthority) {
+            window.alert('userAuthority없음');
+            return;
+        }
+        let authority = userAuthority.value;
+
+        return authority;
+    },
+    getBd: function(){
+        const bd = document.getElementById('bd');
+        if (!bd) {
+            window.alert('bd없음');
+            return;
+        }
+
+        return bd.value;
     }
 });

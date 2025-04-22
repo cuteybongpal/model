@@ -2,6 +2,7 @@ using Cysharp.Threading.Tasks;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -9,9 +10,18 @@ public class UserController : MonoBehaviour
 {
     public float maxXAngle;
     public float minXAngle;
+    bool isInputFocused;
+
+    [DllImport("__Internal")]
+    private static extern void RegisterFocusEventListener();
     void Start()
     {
-        HandleBlock();
+        if (UserManager.Instance.Authority == UserManager.UserAuthority.Create)
+            HandleBlock();
+#if UNITY_WEBGL
+        Debug.Log("이벤트 시작");
+        RegisterFocusEventListener();
+#endif
     }
     //유니티 생명주기 함수
     private void Update()
@@ -44,6 +54,8 @@ public class UserController : MonoBehaviour
     //캐릭터 움직이는 함수
     private void MoveCharacter()
     {
+        if (isInputFocused)
+            return;
         float angleY = transform.localRotation.eulerAngles.y;
         if (angleY > 180)
             angleY -= 360;
@@ -179,5 +191,11 @@ public class UserController : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void OnInputFocusChanged(string value)
+    {
+        Debug.Log(value);
+        isInputFocused = (value == "true");
     }
 }

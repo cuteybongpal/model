@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ModelManager : Singleton<ModelManager>
@@ -17,6 +18,7 @@ public class ModelManager : Singleton<ModelManager>
 
     List<Block> blocks = new List<Block>();
     DataManager dataManager = new DataManager();
+    ResourceManager ResourceManager = new ResourceManager();
     List<Color> usedColor = new List<Color>() { Color.white };
     public Stack<List<BlockData>> WorkStack = new Stack<List<BlockData>>();
     public Stack<List<BlockData>> UndoStack = new Stack<List<BlockData>>();
@@ -85,7 +87,7 @@ public class ModelManager : Singleton<ModelManager>
             usedColor.Add(block.Color);
         }
         UserUI userUI = UIManager.Instance.CurrentMainUI as UserUI;
-        userUI.ChangeColorHistory(usedColor);
+        userUI?.ChangeColorHistory(usedColor);
 
         Push(blocks);
     }
@@ -144,6 +146,27 @@ public class ModelManager : Singleton<ModelManager>
     
     public void LoadModel(string bdFile)
     {
+        string[] blockData = bdFile.Split("//");
+        foreach(string block in blockData)
+        {
+            if (block == string.Empty)
+                break;
+            string[] datas = block.Split(new[] {"position:","texture:","color:"}, StringSplitOptions.RemoveEmptyEntries);
+            string[] vectorData = datas[0].Split(',');
+            string textureKey = datas[1];
+            string[] ColorData = datas[2].Split(",");
+
+            Vector3Int blockPosition = new Vector3Int(int.Parse(vectorData[0]), int.Parse(vectorData[1]), int.Parse(vectorData[2]));
+            Material blockMaterial = ResourceManager.Load<Material>(textureKey);
+            Color blockColor = new Color(int.Parse(ColorData[0])/ 255f, int.Parse(ColorData[1]) / 255f, int.Parse(ColorData[2]) / 255f);
+
+            Block _block = ObjectManager.Instance.blockManager.Spawn();
+
+            _block.Material = blockMaterial;
+            _block.Color = blockColor;
+            _block.Pos = blockPosition;
+            Add(_block); 
+        }
 
     }
     

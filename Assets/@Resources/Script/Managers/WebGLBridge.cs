@@ -13,6 +13,10 @@ public static class WebGLBridge
     private static extern void SendImagesToJS(string Base64ImagesJson, string fileNamesJson);
     [DllImport("__Internal")]
     private static extern void Submit();
+    [DllImport("__Internal")]
+    public static extern string getUserAuthority();
+    [DllImport("__Internal")]
+    public static extern string getBd();
 
     public static void SendObjFileToJS(string objFile)
     {

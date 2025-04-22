@@ -26,6 +26,7 @@ public class UI_ColorPicker : MonoBehaviour
     {
         pallete = transform.GetChild(0).gameObject.GetComponent<Image>();
         picker = transform.GetChild(1).gameObject.GetComponent<Image>();
+        picker.color = new Color(1,1,1,0);
         sizeOfPallete = new Vector2(pallete.rectTransform.rect.width, pallete.rectTransform.rect.height);
     }
     
