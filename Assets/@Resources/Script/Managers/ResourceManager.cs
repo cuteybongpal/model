@@ -35,7 +35,7 @@ public class ResourceManager
             {
                 if (result.Status == AsyncOperationStatus.Succeeded)
                 {
-                    Debug.Log(key);
+                    //Debug.Log(key);
                     resources.Add(key, (UnityEngine.Object)handle.Result);
                     callback?.Invoke(true);
                 }

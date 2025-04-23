@@ -14,9 +14,9 @@ public static class WebGLBridge
     [DllImport("__Internal")]
     private static extern void Submit();
     [DllImport("__Internal")]
-    public static extern string getUserAuthority();
+    public static extern void getUserAuthority();
     [DllImport("__Internal")]
-    public static extern string getBd();
+    public static extern void getBd();
 
     public static void SendObjFileToJS(string objFile)
     {

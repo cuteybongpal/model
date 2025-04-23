@@ -8,13 +8,15 @@ using UnityEngine.SceneManagement;
 public class Loader : MonoBehaviour
 {
     ResourceManager resourceManager;
-    void Start()
+    async void Start()
     {
-        Debug.Log("Ω√¿€");
-        Debug.Log(WebGLBridge.getUserAuthority());
+        WebGLBridge.getUserAuthority();
+        while (UserManager.Instance.Authority == UserManager.UserAuthority.None)
+        {
+            await UniTask.Yield();
+        }
 
-        UserManager.Instance.SetUserAuthority(WebGLBridge.getUserAuthority());
-                                
+
         resourceManager = new ResourceManager();
         resourceManager.LoadAllAsync<GameObject>("Prefab", () =>
         {
@@ -35,6 +37,5 @@ public class Loader : MonoBehaviour
                 });
             });
         });
-
     }
 }

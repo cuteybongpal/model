@@ -78,8 +78,7 @@ mergeInto(LibraryManager.library, {
             return;
         }
         let authority = userAuthority.value;
-
-        return authority;
+        SendMessage('Manager', 'SetUserAuthority', authority);
     },
     getBd: function(){
         const bd = document.getElementById('bd');
@@ -87,7 +86,6 @@ mergeInto(LibraryManager.library, {
             window.alert('bd없음');
             return;
         }
-
-        return bd.value;
+        Sendmassage('Manager', 'LoadModel', bd.value);
     }
 });
