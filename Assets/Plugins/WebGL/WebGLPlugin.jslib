@@ -86,6 +86,6 @@ mergeInto(LibraryManager.library, {
             window.alert('bd없음');
             return;
         }
-        Sendmassage('Manager', 'LoadModel', bd.value);
+        SendMessage('Manager', 'LoadModel', bd.value);
     }
 });
