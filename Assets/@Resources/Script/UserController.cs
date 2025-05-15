@@ -18,10 +18,8 @@ public class UserController : MonoBehaviour
     {
         if (UserManager.Instance.Authority == UserManager.UserAuthority.Create)
             HandleBlock();
-#if UNITY_WEBGL
         Debug.Log("이벤트 시작");
         RegisterFocusEventListener();
-#endif
     }
     //유니티 생명주기 함수
     private void Update()

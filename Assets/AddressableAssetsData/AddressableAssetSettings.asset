@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 468a46d0ae32c3544b7d98094e6448a9, type: 3}
   m_Name: AddressableAssetSettings
   m_EditorClassIdentifier: 
-  m_DefaultGroup: a9834e8d0f3dfa9448d552345cbdc526
+  m_DefaultGroup: 507d6592d12005f409d49e0cbe60d4d3
   m_currentHash:
     serializedVersion: 2
-    Hash: 841fc54f7ee381b2f87108b42448d677
+    Hash: 3654134cebec49c358de069b7e7394bd
   m_OptimizeCatalogSize: 0
-  m_BuildRemoteCatalog: 0
+  m_BuildRemoteCatalog: 1
   m_BundleLocalCatalog: 0
   m_CatalogRequestsTimeout: 0
   m_DisableCatalogUpdateOnStart: 0
@@ -35,19 +35,17 @@ MonoBehaviour:
   m_CheckForContentUpdateRestrictionsOption: 0
   m_MonoScriptBundleCustomNaming: 
   m_RemoteCatalogBuildPath:
-    m_Id: 
+    m_Id: 3a13e4c5d2ae57c4892928c995bb14b4
   m_RemoteCatalogLoadPath:
-    m_Id: 
-  m_ContentStateBuildPathProfileVariableName: 
+    m_Id: 09227a844ff844046b26af398c3c064c
+  m_ContentStateBuildPathProfileVariableName: <default settings path>
   m_CustomContentStateBuildPath: 
   m_ContentStateBuildPath: 
-  m_BuildAddressablesWithPlayerBuild: 0
+  m_BuildAddressablesWithPlayerBuild: 1
   m_overridePlayerVersion: '[UnityEditor.PlayerSettings.bundleVersion]'
   m_GroupAssets:
   - {fileID: 11400000, guid: 80aab6693dc19234fb89d51a8fe0fb91, type: 2}
-  - {fileID: 11400000, guid: daec6f839da36894ca2ff57e234e781a, type: 2}
-  - {fileID: 11400000, guid: c8cd4d408d3df144a957302c98758b02, type: 2}
-  - {fileID: 11400000, guid: a47b5cdd89e187945b023c6228d54d1c, type: 2}
+  - {fileID: 11400000, guid: bfce481d3a1652a4282b5dea99573ccb, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
     m_CleanupStreamingAssetsAfterBuilds: 1
@@ -61,6 +59,20 @@ MonoBehaviour:
       m_Values:
       - m_Id: f9ec99f12a44fcf4abaf7e2861fc8cb2
         m_Value: '[UnityEditor.EditorUserBuildSettings.activeBuildTarget]'
+      - m_Id: 610f8424d92b3fc43828ecdfe64e8c35
+        m_Value: '[UnityEngine.AddressableAssets.Addressables.BuildPath]/[BuildTarget]'
+      - m_Id: 0addbd0771afb244d965aeebe371e11c
+        m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
+      - m_Id: 3a13e4c5d2ae57c4892928c995bb14b4
+        m_Value: Server/[BuildTarget]
+      - m_Id: 09227a844ff844046b26af398c3c064c
+        m_Value: https://addressable-hyowon.s3.ap-southeast-2.amazonaws.com/[BuildTarget]
+    - m_InheritedParent: 
+      m_Id: fb098cc724b93e9459cb76a772f135ea
+      m_ProfileName: New Profile
+      m_Values:
+      - m_Id: f9ec99f12a44fcf4abaf7e2861fc8cb2
+        m_Value: WebGL
       - m_Id: 610f8424d92b3fc43828ecdfe64e8c35
         m_Value: '[UnityEngine.AddressableAssets.Addressables.BuildPath]/[BuildTarget]'
       - m_Id: 0addbd0771afb244d965aeebe371e11c
@@ -110,5 +122,6 @@ MonoBehaviour:
     m_HostingServiceInfos: []
     m_Settings: {fileID: 11400000}
     m_NextInstanceId: 0
-    m_RegisteredServiceTypeRefs: []
+    m_RegisteredServiceTypeRefs:
+    - UnityEditor.AddressableAssets.HostingServices.HttpHostingService, Unity.Addressables.Editor
     m_PingTimeoutInMilliseconds: 5000

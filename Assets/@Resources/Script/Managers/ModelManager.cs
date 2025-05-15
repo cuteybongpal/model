@@ -86,9 +86,11 @@ public class ModelManager : Singleton<ModelManager>
         {
             usedColor.Add(block.Color);
         }
-        UserUI userUI = UIManager.Instance.CurrentMainUI as UserUI;
-        userUI?.ChangeColorHistory(usedColor);
-
+        if (UIManager.Instance.CurrentMainUI != null)
+        {
+            UserUI userUI = UIManager.Instance.CurrentMainUI as UserUI;
+            userUI?.ChangeColorHistory(usedColor);
+        }
         Push(blocks);
     }
     //blocks 리스트에 블럭 삭제
@@ -115,7 +117,7 @@ public class ModelManager : Singleton<ModelManager>
         Push(blocks);
     }
     //만들 었던 것을 저장시킴
-    public async void BuildComplete()
+    public void BuildComplete()
     {
         string objContent = dataManager.Export2obj(blocks);
         string bdContent = dataManager.Export2bd(blocks);
@@ -146,26 +148,29 @@ public class ModelManager : Singleton<ModelManager>
     
     public void LoadModel(string bdFile)
     {
-        string[] blockData = bdFile.Split("//");
-        foreach(string block in blockData)
+        string[] blockData = bdFile.Split("//", StringSplitOptions.RemoveEmptyEntries);
+        for (int i = 0; i < blockData.Length; i++)
         {
-            if (block == string.Empty)
-                break;
-            string[] datas = block.Split(new[] {"position:","texture:","color:"}, StringSplitOptions.RemoveEmptyEntries);
+            string block = blockData[i];
+            string[] datas = block.Split(new[] { "position:", "texture:", "color:" }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (string data in datas)
+            {
+                Debug.Log(data);
+            }
             string[] vectorData = datas[0].Split(',');
             string textureKey = datas[1];
             string[] ColorData = datas[2].Split(",");
 
             Vector3Int blockPosition = new Vector3Int(int.Parse(vectorData[0]), int.Parse(vectorData[1]), int.Parse(vectorData[2]));
-            Material blockMaterial = ResourceManager.Load<Material>(textureKey);
-            Color blockColor = new Color(int.Parse(ColorData[0])/ 255f, int.Parse(ColorData[1]) / 255f, int.Parse(ColorData[2]) / 255f);
+            Material blockMaterial = ResourceManager.Load<Material>(textureKey+".mat");
+            Color blockColor = new Color(int.Parse(ColorData[0]) / 255f, int.Parse(ColorData[1]) / 255f, int.Parse(ColorData[2]) / 255f);
 
             Block _block = ObjectManager.Instance.blockManager.Spawn();
 
             _block.Material = blockMaterial;
             _block.Color = blockColor;
             _block.Pos = blockPosition;
-            Add(_block); 
+            Add(_block);
         }
 
     }

@@ -262,6 +262,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46404081ad121ce42a1eacf0fc55e5ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Authority: 1
   UserMode: 0
   CurrentMaterial: {fileID: 0}
   CurrentColor: {r: 1, g: 1, b: 1, a: 1}
