@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: 507d6592d12005f409d49e0cbe60d4d3
   m_currentHash:
     serializedVersion: 2
-    Hash: 3654134cebec49c358de069b7e7394bd
+    Hash: 00000000000000000000000000000000
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 1
   m_BundleLocalCatalog: 0
@@ -66,7 +66,7 @@ MonoBehaviour:
       - m_Id: 3a13e4c5d2ae57c4892928c995bb14b4
         m_Value: Server/[BuildTarget]
       - m_Id: 09227a844ff844046b26af398c3c064c
-        m_Value: https://addressable-hyowon.s3.ap-southeast-2.amazonaws.com/[BuildTarget]
+        m_Value: https://addressable-hyowon.s3.ap-southeast-2.amazonaws.com/Server/[BuildTarget]
     - m_InheritedParent: 
       m_Id: fb098cc724b93e9459cb76a772f135ea
       m_ProfileName: New Profile
